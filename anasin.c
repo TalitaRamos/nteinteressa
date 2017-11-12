@@ -211,7 +211,10 @@ void tipos_param(){
 
             //se for id
             if(tk.categoria == ID){
-                controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0);
+
+                if(controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+
+                }
 
             }//fim-se for id
 
