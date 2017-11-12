@@ -19,7 +19,7 @@ void termo()
     }
 }
 
-/*FunÁ„o que pega um token a frente da leitura para verificaÁ„o*/
+/*Fun√ß√£o que pega um token a frente da leitura para verifica√ß√£o*/
 Token next_token()
 {
     Token tk;
@@ -40,12 +40,12 @@ void fator(){
         //Se for abrir parentesis
         if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
 
-            //Chama a funÁ„o de express„o
+            //Chama a fun√ß√£o de express√£o
             //expr();
 
-            //LaÁo para checar as ocorrencias de vÌrgulas e expr consecutivas
+            //La√ßo para checar as ocorrencias de v√≠rgulas e expr consecutivas
             while(1){
-                //Se for vÌrgula, continua chamando expr
+                //Se for v√≠rgula, continua chamando expr
                 if(tk.categoria == SN && tk.cod = VIRG){
                     //expr();
                 }else{
@@ -70,7 +70,7 @@ void fator(){
     //Checar se houve abre parentesis
     if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
 
-        //Chamar a funÁ„o express„o
+        //Chamar a fun√ß√£o express√£o
         //expr();
 
         //If para checar se houve fechar parentesis
@@ -80,7 +80,7 @@ void fator(){
     }
 
 
-    /* Se for NEGA«√O de express„o */
+    /* Se for NEGA√á√ÉO de express√£o */
     if(tk.categoria == SN && tk.cod == NEGACAO){
         fator();
     }
@@ -95,8 +95,8 @@ void expr()
     Token next_tk;
 
     expr_simp();
-    next_tk = next_token();/*pega um token na frente para olhar se È um op_rel ou fim da exp_simp*/
-    if(next_tk.categoria == SN)/*Se for um sinal eu verifico se È um op_rel, se n„o ele sai por vazio*/
+    next_tk = next_token();/*pega um token na frente para olhar se √© um op_rel ou fim da exp_simp*/
+    if(next_tk.categoria == SN)/*Se for um sinal eu verifico se √© um op_rel, se n√£o ele sai por vazio*/
     {
         op_rel();
         expr_simp();
@@ -106,7 +106,7 @@ void expr()
 
 void expr_simp()
 {
-    /*Se o termo comeÁar com + ou - */
+    /*Se o termo come√ßar com + ou - */
     if(tk.categoria == SN)
     {
         if(tk.cod == SOMA || tk.cod == SUB)
@@ -120,7 +120,7 @@ void expr_simp()
                     termo();
                 }else{
 
-                    /*ERRO DE OPERADOR essa categoria È obrigatorio*/
+                    /*ERRO DE OPERADOR essa categoria √© obrigatorio*/
 
                     break;
                 }
@@ -146,7 +146,7 @@ void expr_simp()
                 termo();
             }else{
 
-                 /*ERRO DE OPERADOR essa categoria È obrigatorio*/
+                 /*ERRO DE OPERADOR essa categoria √© obrigatorio*/
 
                 break;
             }
@@ -212,7 +212,7 @@ void tipos_param(){
             //se for id
             if(tk.categoria == ID){
 
-                //Se n„o houver o ID na tabela, ele insere
+                //Se n√£o houver o ID na tabela, ele insere
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
 
@@ -224,7 +224,7 @@ void tipos_param(){
                                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                                     controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
                                 }else{
-                                    //Erro id j· existente na tabela
+                                    //Erro id j√° existente na tabela
                                 }
 
                             }//fim-tipo
@@ -234,13 +234,13 @@ void tipos_param(){
 
                         }//Fim - se for virgula
                         else{
-                            //ERRO n„o tem virguls
+                            //ERRO n√£o tem virguls
                             break;
                         }
                     }//FIM WHILE
 
                 }else{
-                    //Erro id j· existente na tabela
+                    //Erro id j√° existente na tabela
                 }
 
             }//fim-se for id
@@ -250,12 +250,156 @@ void tipos_param(){
 
         }//fim-tipo
         else{
-            //erro sint·tico TIPO INVALIDO
+            //erro sint√°tico TIPO INVALIDO
         }
 
     }//FIM-ELSE PR
 
 
+}
+ 
+void tipos_p_opc ()
+{
+    //Se for palavra reservada
+    if(tk.categoria == PR){
+
+        //Se a palavra reservada for semparam
+        if(strcmp("semparam", PAL_RESERV[tk.cod])==0){
+            return;
+
+        }//fim-se semparam
+
+    }
+    else{
+        //SE FOR TIPO
+        if(tipo()>0){
+
+            //se for id
+            if(tk.categoria == ID){
+
+                //Se n√£o houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+                                }else{
+                                    //Erro id j√° existente na tabela
+                                }
+
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
+                            }
+
+                        }//Fim - se for virgula
+                        else{
+                            //ERRO n√£o tem virguls
+                            break;
+                        }
+                    }//FIM WHILE
+
+                }else{
+                    //Erro id j√° existente na tabela
+                }
+
+            }//fim-se for id
+
+        }//fim-tipo
+        else{
+            //erro sint√°tico TIPO INVALIDO
+        }
+
+    }//FIM-ELSE PR
+
+
+}
+
+/*SOBRE OBS*/
+void tipos_p_opc ()
+{
+    //Se for palavra reservada
+    if(tk.categoria == PR){
+
+        //Se a palavra reservada for semparam
+        if(strcmp("semparam", PAL_RESERV[tk.cod])==0){
+            return;
+
+        }//fim-se semparam
+
+    }
+    else{
+        //SE FOR TIPO
+        if(tipo()>0){
+
+            //se for id
+            if(tk.categoria == ID){
+
+                //Se n√£o houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+                                }else{
+                                    //Erro id j√° existente na tabela
+                                }
+
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
+                            }
+
+                        }//Fim - se for virgula
+                        else{
+                            //ERRO n√£o tem virguls
+                            break;
+                        }
+                    }//FIM WHILE
+
+                }else{
+                    //Erro id j√° existente na tabela
+                }
+
+            }//fim-se for id
+
+        }//fim-tipo
+        else{
+            if(tipo()>0){
+
+                //Se n√£o houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
+                            }
+
+                        }//Fim - se for virgula
+                        else{
+                            //ERRO n√£o tem virguls
+                            break;
+                        }
+                    }//FIM WHILE
+
+        }//fim-tipo
+    }// else
 }
 
 
