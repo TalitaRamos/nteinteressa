@@ -1,5 +1,6 @@
 #include "analex.h"
 #include "anasin.h"
+#include "controlador_tab.h"
 
 void termo()
 {
@@ -169,3 +170,27 @@ int opr_rel()
 
     return 0;
 }
+
+
+int tipo(){
+
+    //Se for palavra reservada
+    if(tk.categoria == PR){
+
+        if(strcmp("caracter", PAL_RESERV[tk.cod])==0){
+            return tk.cod;
+        }else if(strcmp("inteiro", PAL_RESERV[tk.cod])==0){
+            return tk.cod;
+        }else if(strcmp("real", PAL_RESERV[tk.cod])==0){
+            return tk.cod;
+        }else if(strcmp("booleano", PAL_RESERV[tk.cod])==0){
+            return tk.cod;
+        }else{
+            return -1;
+        }
+
+    }
+
+}
+
+

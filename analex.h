@@ -116,4 +116,6 @@ char PAL_RESERV[QTD_PALAVRASRESERV][100] = {
     "senao"
 };
 
+
+
 #endif

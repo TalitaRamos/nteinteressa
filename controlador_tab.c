@@ -28,7 +28,7 @@ void controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int
             break;
 
         case CONSULTAR:
-            //consultar(lexema, escopo);
+            consultar(lexema, escopo);
             break;
     }//fim-switch
 
@@ -101,6 +101,7 @@ void imprimirTabela(){
     }
 }
 
+/*
 void main(){
     char lexema[TAM_LEXEMA] = {"Teste"};
     int tipo = 1;
@@ -122,3 +123,4 @@ void main(){
     //imprimirTabela();
 
 }
+*/
