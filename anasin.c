@@ -244,6 +244,9 @@ void tipos_param(){
                 }
 
             }//fim-se for id
+            else{
+                //Esperado id
+            }
 
         }//fim-tipo
         else{
@@ -255,3 +258,85 @@ void tipos_param(){
 
 }
 
+
+/*SOBRE OBS*/
+void tipos_p_opc ()
+{
+    //Se for palavra reservada
+    if(tk.categoria == PR){
+
+        //Se a palavra reservada for semparam
+        if(strcmp("semparam", PAL_RESERV[tk.cod])==0){
+            return;
+
+        }//fim-se semparam
+
+    }
+    else{
+        //SE FOR TIPO
+        if(tipo()>0){
+
+            //se for id
+            if(tk.categoria == ID){
+
+                //Se não houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+                                }else{
+                                    //Erro id já existente na tabela
+                                }
+
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
+                            }
+
+                        }//Fim - se for virgula
+                        else{
+                            //ERRO não tem virguls
+                            break;
+                        }
+                    }//FIM WHILE
+
+                }else{
+                    //Erro id já existente na tabela
+                }
+
+            }//fim-se for id
+
+        }//fim-tipo
+        else{
+            if(tipo()>0){
+
+                //Se não houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
+
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
+                            }
+
+                        }//Fim - se for virgula
+                        else{
+                            //ERRO não tem virguls
+                            break;
+                        }
+                    }//FIM WHILE
+
+        }//fim-tipo
+    }// else
+}
