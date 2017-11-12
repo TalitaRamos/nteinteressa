@@ -6,11 +6,11 @@ void iniciar_pilha(){
 }
 
 /*Função principal*/
-void controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int categoria, int zumbi){
+int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int categoria, int zumbi){
 
     switch (operation){
         case IGNORE:
-            return;
+            return 0;
             break;
 
         case EMPILHAR:
@@ -20,18 +20,21 @@ void controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int
                 exit(1);
             }else{
                 empilhar(lexema, tipo, escopo, categoria, zumbi);
+                return 1;
             }
             break;
 
         case DESEMPILHAR:
             desempilhar();
+            return 1;
             break;
 
         case CONSULTAR:
-            consultar(lexema, escopo);
+            return(consultar(lexema, escopo));
             break;
     }//fim-switch
 
+    return 0;
 }
 
 void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi){

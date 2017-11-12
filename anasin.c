@@ -189,8 +189,39 @@ int tipo(){
             return -1;
         }
 
-    }
+    }//FIM-se for PR
 
 }
 
+void tipos_param(){
+
+    //Se for palavra reservada
+    if(tk.categoria == PR){
+
+        //Se a palavra reservada for semparam
+        if(strcmp("semparam", PAL_RESERV[tk.cod])==0){
+            return;
+
+        }//fim-se semparam
+
+    }
+    else{
+        //SE FOR TIPO
+        if(tipo()>0){
+
+            //se for id
+            if(tk.categoria == ID){
+                controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0);
+
+            }//fim-se for id
+
+        }//fim-tipo
+        else{
+            //erro sintático
+        }
+
+    }//FIM-ELSE PR
+
+
+}
 
