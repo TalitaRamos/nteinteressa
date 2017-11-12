@@ -212,8 +212,33 @@ void tipos_param(){
             //se for id
             if(tk.categoria == ID){
 
-                if(controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                //Se não houver o ID na tabela, ele insere
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, NAO_ZUMBI);
 
+                    while(1){
+                        if(tk.categoria == SN && tk.cod == VIRG){
+
+                            if(tipo()>0){
+
+                                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, NAO_ZUMBI);
+                                }else{
+                                    //Erro id já existente na tabela
+                                }
+
+                            }
+
+                        }else{
+                            //ERRO não tem virguls
+                            break;
+                        }
+                    }
+
+
+
+                }else{
+                    //Erro id já existente na tabela
                 }
 
             }//fim-se for id
