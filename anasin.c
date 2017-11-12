@@ -214,7 +214,7 @@ void tipos_param(){
 
                 //Se não houver o ID na tabela, ele insere
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, NAO_ZUMBI);
+                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
 
                     while(1){
                         if(tk.categoria == SN && tk.cod == VIRG){
@@ -222,20 +222,22 @@ void tipos_param(){
                             if(tipo()>0){
 
                                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, NAO_ZUMBI);
+                                    controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
                                 }else{
                                     //Erro id já existente na tabela
                                 }
 
+                            }//fim-tipo
+                            else{
+                                //ERRO TIPO INVALIDO
                             }
 
-                        }else{
+                        }//Fim - se for virgula
+                        else{
                             //ERRO não tem virguls
                             break;
                         }
-                    }
-
-
+                    }//FIM WHILE
 
                 }else{
                     //Erro id já existente na tabela
@@ -245,7 +247,7 @@ void tipos_param(){
 
         }//fim-tipo
         else{
-            //erro sintático
+            //erro sintático TIPO INVALIDO
         }
 
     }//FIM-ELSE PR
