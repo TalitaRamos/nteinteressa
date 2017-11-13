@@ -12,6 +12,8 @@ int main(){
 
         //chamar o analisador sintatico
 
+        analex();
+
         fclose(arquivo);
     }
     else{

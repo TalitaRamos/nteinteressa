@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1510534932 source:a:\desktop\compilador\nteinteressa\main.c
+	"analex.h"
+
+1510534412 a:\desktop\compilador\nteinteressa\analex.h
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<string.h>
+	<math.h>
+
+1510534516 source:a:\desktop\compilador\nteinteressa\analex.c
+	"analex.h"
+

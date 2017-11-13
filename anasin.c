@@ -20,9 +20,9 @@ void termo()
 }
 
 /*FunÃ§Ã£o que pega um token a frente da leitura para verificaÃ§Ã£o*/
-Token next_token()
+token next_token()
 {
-    Token tk;
+    token tk;
     tk = Analisador_lexico();
     return tk;
 }
@@ -339,4 +339,26 @@ void tipos_p_opc ()
 
         }//fim-tipo
     }// else
+}
+
+
+void atrib(){
+
+    //Esperado ID
+	if(tk.categoria == ID){
+    //analex();
+
+		//Esperado sinal de atribuição
+		if(tk.categoria == SN && tk.cod == ATRIB){
+            //analex();
+            expr();
+
+		}else{
+            //Erro sintático, é esperado sinal de atribuição
+		}
+
+
+	}else{
+        //Erro sintático, esperado ID
+	}
 }
