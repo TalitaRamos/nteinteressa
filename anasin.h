@@ -15,7 +15,7 @@ void tipos_param();
 void tipos_p_opc();
 
 enum{
-	BOOLEANO,
+	BOOLEANO=0,
 	CARACTER,
 	DIGITO,
 	ENQUANTO,

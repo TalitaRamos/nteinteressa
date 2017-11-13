@@ -260,8 +260,7 @@ void tipos_param(){
 
 
 /*SOBRE OBS*/
-void tipos_p_opc ()
-{
+void tipos_p_opc (){
     //Se for palavra reservada
     if(tk.categoria == PR){
 
@@ -336,12 +335,14 @@ void tipos_p_opc ()
                             break;
                         }
                     }//FIM WHILE
+                }
 
         }//fim-tipo
     }// else
 }
 
 
+/*CORRIGIR ID*/
 void atrib(){
 
     //Esperado ID
@@ -362,3 +363,180 @@ void atrib(){
         //Erro sintático, esperado ID
 	}
 }
+
+
+void cmd(){
+    if(tk.categoria == PR || tk.categoria == ID || tk.categoria == SN){
+
+        //Se for sinal
+        if(tk.categoria == SN){
+
+            switch(tk.codigo){
+
+                case PT_VIRG:
+                    analex();
+                    break;
+
+                case CHAVES_ABRE:
+                    analex();
+                    while(tk.categoria != SN && tk.categoria!=CHAVES_FECHA){
+                        cmd();
+                    }
+                    analex();
+                    break;
+                default:
+                    /*ERRO DE CATEGORIA*/
+
+            }//fim-switch
+
+        }//if SN
+
+        //Se for palavra reservada
+        if(tk.categoria == PR){
+
+            switch(tk.codigo){
+
+                case SE:
+                    analex();
+                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                        analec(); /*OBSERVAR AQUI*/
+                        expr();
+                        analex();
+                        if(tk.categoria == SN && tk.categoria == PARENTESIS_FECHA){
+                            analex();
+                            cmd();
+                            /*OBSERVAÇÃO OLHAR DEPOIS A CHAMADA RECURSIVA*/
+
+                        }//if PARENTESIS_FECHA
+                        else{
+                            //Erro fecha parentesis esperado
+                        }
+
+                    }//if PARENTESIS_ABRE
+                else {
+
+                    /*ERRO DE NÂO ABERTURA DE PARENTÊSE*/
+                }
+                    break;
+
+                case SENAO:
+                    analex();
+                    cmd();
+                    break;
+
+                case ENQUANTO:
+                    analex();
+                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                        analex();
+                        expr();
+                        analex();
+                        if(tk.categoria == SN && tk.categoria == PARENTESIS_FECHA){
+                            analex();
+                            cmd();
+                        }else{
+
+                            /*ESPERADO FECHA PARENTESE*/
+                        }
+                    }else {
+
+                        /*ESPERADO ABRE PARENTESE*/
+                    }
+                    break;
+
+                case PARA:
+                    analex();
+                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                        analex();
+                        //Se o proximo token for ID
+                        if(tknext.categoria == ID){
+                            analex();
+                            atrib();
+
+
+                        }
+                        //Se o próximo token for ponto e virgula
+                        else if(tknext.categoria == SN && tknext.categoria == PT_VIRG){
+
+                        }
+
+
+                    }else{
+
+                        /* ERRO ESPERAVA-SE ABRE PARENTESE*/
+
+                    }//else PARENTESIS_ABRE
+
+                    break;
+
+                case RETORNE:
+                    analex();
+                    if(!(tk.categoria == SN && tk.categoria == PT_VIRG)){
+                        expr();
+                        analex();
+                        if(tk.categoria == SN && tk.categoria == PT_VIRG){
+
+                        }else{
+
+                            /*ERRO ESPERAVA-SE UM PONTO E VIRGULA*/
+
+                        }
+                    }
+
+                    break;
+
+                default:
+
+                /*ERRO de comando não esperado*/
+
+
+            }//switch
+
+
+        }//if categoria
+
+
+    }//If PR ou ID ou SN
+}//void
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
