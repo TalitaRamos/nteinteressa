@@ -2,15 +2,15 @@
 #include "anasin.h"
 #include "controlador_tab.h"
 
-void termo()
-{
+void termo(){
     fator();
-    while(1)
-    {
+
+    while(1){
         if(tk.categoria == SN)
         {
             if(tk.cod == MULT || tk.cod == DIV || tk.cod == AND)
             {
+                analex();
                 fator();
             } else {
                 break;
@@ -28,22 +28,25 @@ token next_token()
 }
 
 
-void fator(){
+int fator(){
     /*Se for Inteiro, Real ou Caractere*/
-    if(tk.Categoria == CT_I || tk.categoria == CT_R || tk.categoria == CT_C ){
-        return;
+    if(tk.categoria == CT_I || tk.categoria == CT_R || tk.categoria == CT_C ){
+        return 1;
     }
 
     /*Se for ID*/
     if(tk.categoria == ID){
+        analex();
 
         //Se for abrir parentesis
         if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
 
-            //Chama a fun√ß√£o de express√£o
-            //expr();
+            //Chama a funÁ„o de express√£o
+            analex();
+            expr();
 
-            //La√ßo para checar as ocorrencias de v√≠rgulas e expr consecutivas
+            analex();
+            //LaÁo para checar as ocorrencias de v√≠rgulas e expr consecutivas
             while(1){
                 //Se for v√≠rgula, continua chamando expr
                 if(tk.categoria == SN && tk.cod = VIRG){
@@ -63,6 +66,8 @@ void fator(){
             return;
         }//FIM-ELSE
 
+        //Se for somente ID
+        return 1;
 
     }//Fim-Se for ID
 
@@ -90,33 +95,42 @@ void fator(){
 
 
 /*Mexi aqui*/
-void expr()
-{
-    Token next_tk;
+void expr(){
 
     expr_simp();
-    next_tk = next_token();/*pega um token na frente para olhar se √© um op_rel ou fim da exp_simp*/
-    if(next_tk.categoria == SN)/*Se for um sinal eu verifico se √© um op_rel, se n√£o ele sai por vazio*/
-    {
-        op_rel();
-        expr_simp();
-    } else return; /*Sai por vazio*/
+
+    if(tknext.categoria == SN){
+        //se o proximo token for op relacional
+        if(tknext.cod == COMPARA || tknext.cod == DIFERENTE || tknext.cod == MAIOR_Q || tknext.cod == MENOR_Q || tknext.cod == MAIOR_IG || tknext.cod == MENOR_IG){
+            analex();
+            op_rel();
+            analex();
+            expr_simp();
+
+        }//fim-se o proximo token for op relacional
+        else{
+            //Erro, esperando operador relacional
+        }
+    }
 }
 
 
 void expr_simp()
 {
-    /*Se o termo come√ßar com + ou - */
+    /*Se o termo comeÁar com + ou - */
     if(tk.categoria == SN)
     {
+
         if(tk.cod == SOMA || tk.cod == SUB)
         {
+            analex();
             termo();
             /*While se houver mais e 1 termo*/
             while(1)
             {
                 if(tk.cod == SOMA || tk.cod == SUB || tk.cod == OR)
                 {
+                    analex();
                     termo();
                 }else{
 
@@ -137,12 +151,14 @@ void expr_simp()
 
     }else{
 
+        analex();
         termo();
         /*While se houver mais e 1 termo*/
         while(1)
         {
             if(tk.cod == SOMA || tk.cod == SUB || tk.cod == OR)
             {
+                analex();
                 termo();
             }else{
 
@@ -162,7 +178,7 @@ int opr_rel()
 {
     if(tk.categoria == SN)
     {
-        if(tk.categoria == COMPARA || tk.categoria == DIFERENTE || tk.categoria == MAIOR_IG || tk.categoria == MAIOR_Q || tk.categoria == MENOR_IG || tk.categoria == MENOR_Q)
+        if(tk.cod == COMPARA || tk.cod == DIFERENTE || tk.cod == MAIOR_IG || tk.cod == MAIOR_Q || tk.cod == MENOR_IG || tk.cod == MENOR_Q)
         {
             return 1;
         }
@@ -379,7 +395,7 @@ void cmd(){
 
                 case CHAVES_ABRE:
                     analex();
-                    while(tk.categoria != SN && tk.categoria!=CHAVES_FECHA){
+                    while(tk.categoria != SN && tk.cod!=CHAVES_FECHA){
                         cmd();
                     }
                     analex();
@@ -398,11 +414,11 @@ void cmd(){
 
                 case SE:
                     analex();
-                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
                         analec(); /*OBSERVAR AQUI*/
                         expr();
                         analex();
-                        if(tk.categoria == SN && tk.categoria == PARENTESIS_FECHA){
+                        if(tk.categoria == SN && tk.cod == PARENTESIS_FECHA){
                             analex();
                             cmd();
                             /*OBSERVA«√O OLHAR DEPOIS A CHAMADA RECURSIVA*/
@@ -426,11 +442,11 @@ void cmd(){
 
                 case ENQUANTO:
                     analex();
-                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
                         analex();
                         expr();
                         analex();
-                        if(tk.categoria == SN && tk.categoria == PARENTESIS_FECHA){
+                        if(tk.categoria == SN && tk.cod == PARENTESIS_FECHA){
                             analex();
                             cmd();
                         }else{
@@ -445,19 +461,103 @@ void cmd(){
 
                 case PARA:
                     analex();
-                    if(tk.categoria == SN && tk.categoria == PARENTESIS_ABRE){
+                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
                         analex();
-                        //Se o proximo token for ID
                         if(tknext.categoria == ID){
                             analex();
                             atrib();
+                            if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                            {
+                                analex();
+                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                {
+                                    analex();
+                                    if(tknext.categoria == ID){
+                                        analex();
+                                        atrib();
+                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+
+                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+
+                                    }else {
+                                        cmd();
+                                    }// else Negacao PARENTESIS_FECHA
+
+                                    //}// else ID OLHAR ISSO
+                            }else{
+                                analex();
+                                expr();
+                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                {
+                                    analex();
+                                    if(tknext.categoria == ID){
+                                        analex();
+                                        atrib();
+                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+
+                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+
+                                    }else
+                                    {
+                                        cmd();
+                                    }// else da negacao de FECHA_PARENTESE
+
+                                    //}// else ID
+                            } else
+                                {
+                                    /*ERRO POR FALTA DE PONTO VIRGULA*/
+
+                                }// else do PT_VIRG expre
+
+                            }// else if PT_VIRG
+
+                            }//if PT_VIRG
+
+                        }else {
+                            /*Verifica quando n„o existir atrib*/
+                            if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                            {
+                                analex();
+                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                {
+                                    analex();
+                                    if(tknext.categoria == ID){
+                                        analex();
+                                        atrib();
+                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+
+                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+
+                                    }else {
+                                        cmd();
+                                    }// else Negacao PARENTESIS_FECHA
+
+                                 }else{
+
+                                }//else do segundo PT_VIRG
+                            }else{
+                                analex();
+                                expr();
+                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                {
+                                    analex();
+                                    if(tknext.categoria == ID){
+                                        analex();
+                                        atrib();
+                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+
+                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+
+                                    }else
+                                    {
+                                        cmd();
+                                    }// else da negacao de FECHA_PARENTESE
 
 
-                        }
-                        //Se o prÛximo token for ponto e virgula
-                        else if(tknext.categoria == SN && tknext.categoria == PT_VIRG){
 
-                        }
+                        }// else ID
+
+                    }//if PARENTESIS_ABRE
 
 
                     }else{
@@ -470,10 +570,10 @@ void cmd(){
 
                 case RETORNE:
                     analex();
-                    if(!(tk.categoria == SN && tk.categoria == PT_VIRG)){
+                    if(!(tk.categoria == SN && tk.cod == PT_VIRG)){
                         expr();
                         analex();
-                        if(tk.categoria == SN && tk.categoria == PT_VIRG){
+                        if(tk.categoria == SN && tk.cod == PT_VIRG){
 
                         }else{
 
@@ -497,22 +597,6 @@ void cmd(){
 
     }//If PR ou ID ou SN
 }//void
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

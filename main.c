@@ -1,5 +1,7 @@
-//#include "anasin.h"
+#include "anasin.h"
 #include "analex.h"
+
+/*
 int main(){
 
     char nomeArquivo[1000];
@@ -26,4 +28,32 @@ int main(){
     system("pause");
     return 0;
 }
+*/
 
+
+int main(){
+
+    char nomeArquivo[1000];
+
+    printf("\n\tDigite o nome do arquivo de teste: "); scanf("%s", nomeArquivo);
+
+    //ABRE O ARQUIVO
+	if ( (arquivo = fopen(nomeArquivo,"r")) != NULL ){
+        printf("\n\tArquivo aberto com sucesso!\n");
+
+        //chamar o analisador sintatico
+
+        op_rel();
+
+        fclose(arquivo);
+    }
+    else{
+        printf("\n\tNão foi possível abrir o arquivo %s\n", nomeArquivo);
+        system("pause");
+        exit(1);
+    }
+    //FIM-ABRE O ARQUIVO
+
+    system("pause");
+    return 0;
+}
