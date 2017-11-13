@@ -1,10 +1,7 @@
 #include "analex.h"
 
 //Varíavel Global para contar linha
-int linhas = 1;
-
-//Tabela de Cadeias Literais
-char tabLiteral[TAM_TABLITERAL][TAM_TABLITERAL];
+linhas = 1;
 
 //Função para adcionar string à tabela literal
 int addTabelaLiteral(char adcionar[]){
@@ -41,9 +38,8 @@ void erroAnalisadorLexico(char descricao[]){
 }
 
 
-token analisadorLexico(FILE *arquivo){
+token analisadorLexico(){
     /*DECLARAÇÕES*/
-    token tk;
     int estado = 0;
     char ch, armazenarCaracter;
     int contadorLexema, contadorDigito, contadorLT;
@@ -505,14 +501,12 @@ token analisadorLexico(FILE *arquivo){
 
 }//fim-função analisador lexico
 
-/*void analex_principal(FILE *arquivo){
-    tk = analisadorLexico(arquivo);
-    tknext = analex_principal(arquivo);
+void analex(){
     tk = tknext;
+    tknext = analisadorLexico();
+}
 
-}*/
-
-
+/*
 int main(){
     token tk;
     char nomeArquivo[100];
@@ -569,5 +563,5 @@ int main(){
     fclose(arquivo);
 
     return 0;
-}
+}*/
 

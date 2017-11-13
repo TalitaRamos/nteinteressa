@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 #include<math.h>
+
 #define TAM 1001
 #define TAM_LEXEMA 1000
 #define TAM_DIGITOS 1000
@@ -28,10 +29,14 @@ typedef struct tk{
 int addTabelaLiteral(char adcionar[]);
 int comparaPalavraReservada(char palavra[]);
 void erroAnalisadorLexico(char descricao[]);
-token analisadorLexico(FILE *arquivo);
+token analisadorLexico();
+void analex();
 
 //Variáveis Globais
 token tk, tknext;
+FILE *arquivo;
+int linhas;
+char tabLiteral[TAM_TABLITERAL][TAM_TABLITERAL]; //Tabela de Cadeias Literais
 
 //ENUM CATEGORIAS
 typedef enum{
@@ -115,7 +120,5 @@ char PAL_RESERV[QTD_PALAVRASRESERV][100] = {
     "semparam",
     "senao"
 };
-
-
 
 #endif
