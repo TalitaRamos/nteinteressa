@@ -328,14 +328,8 @@ int main(){
 
         //chamar o analisador sintatico
 
-        tk = analisadorLexico();
-        imprimirTK(tk);
-        tknext = analisadorLexico();
-        imprimirTK(tknext);
-
-        //tknext = analisadorLexico();
-
-        //analex();
+        analex();
+        analex();
 
         imprimirTK2(tk);
         imprimirTK2(tknext);

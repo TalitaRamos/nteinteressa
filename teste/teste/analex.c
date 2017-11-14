@@ -46,15 +46,16 @@ token analisadorLexico(){
     char digitos[TAM_DIGITOS], lexema[TAM_LEXEMA], stringLT[TAM_STRINGLT];
 
     /*ASSUME ESSES VALORES DO TOKEN, CASO NÃO MUDAREM, DEU ERRO*/
-    tk.categoria = FIMARQ;
-    tk.cod = 0;
+    token tkfunc;
+    tkfunc.categoria = FIMARQ;
+    tkfunc.cod = 0;
 
     /*PEGA O PRIMEIRO CARACTERE*/
     ch = fgetc(arquivo);
 
     /*CASO SEJA FIM DO ARQUIVO*/
     if(feof(arquivo)){
-        return tk;
+        return tkfunc;
     }
 
     /*LOOP-PRINCIPAL*/
@@ -85,67 +86,67 @@ token analisadorLexico(){
             /*CASO SEJA PT_VIRG*/
             else if(ch == ';'){
                 estado = 8;
-                tk.categoria = SN;
-                tk.cod = PT_VIRG;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = PT_VIRG;
+                return tkfunc;
             }
             /*CASO SEJA VIRGULA*/
             else if(ch == ','){
                 estado = 11;
-                tk.categoria = SN;
-                tk.cod = VIRG;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = VIRG;
+                return tkfunc;
             }
             /*CASO SEJA SOMA*/
             else if(ch == '+'){
                 estado = 12;
-                tk.categoria = SN;
-                tk.cod = SOMA;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = SOMA;
+                return tkfunc;
             }
             /*CASO SEJA SUBTRAÇÃO*/
             else if(ch == '-'){
                 estado = 13;
-                tk.categoria = SN;
-                tk.cod = SUB;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = SUB;
+                return tkfunc;
             }
             /*CASO SEJA MULTIPLICAÇÃO*/
             else if(ch == '*'){
                 estado = 14;
-                tk.categoria = SN;
-                tk.cod = MULT;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = MULT;
+                return tkfunc;
             }
             /*CASO SEJA BARRA*/
             else if(ch == '/'){ estado = 15; }
             /*CASO SEJA ABRE PARENTESIS*/
             else if(ch == '('){
                 estado = 19;
-                tk.categoria = SN;
-                tk.cod = PARENTESIS_ABRE;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = PARENTESIS_ABRE;
+                return tkfunc;
             }
             /*CASO SEJA FECHA PARENTESIS*/
             else if(ch == ')'){
                 estado = 20;
-                tk.categoria = SN;
-                tk.cod = PARENTESIS_FECHA;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = PARENTESIS_FECHA;
+                return tkfunc;
             }
             /*CASO SEJA ABRE CHAVES*/
             else if(ch == '{'){
                 estado = 21;
-                tk.categoria = SN;
-                tk.cod = CHAVES_ABRE;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = CHAVES_ABRE;
+                return tkfunc;
             }
             /*CASO SEJA FECHA CHAVES*/
             else if(ch == '}'){
                 estado = 22;
-                tk.categoria = SN;
-                tk.cod = CHAVES_FECHA;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = CHAVES_FECHA;
+                return tkfunc;
             }
             /*CASO SEJA & */
             else if(ch == '&'){ estado = 23; }
@@ -169,7 +170,7 @@ token analisadorLexico(){
             else{
                 /*CASO SEJA FIM DO ARQUIVO*/
                 if(feof(arquivo)){
-                    return tk;
+                    return tkfunc;
                 }
                 erroAnalisadorLexico("Caractere não valido");
 
@@ -191,15 +192,15 @@ token analisadorLexico(){
 
                 //SE ESTIVER NA LISTA DE TABELA RESERVADA
                 if(testar>=0){
-                    tk.cod = testar; //indice da palavra reservada
-                    tk.categoria = PR;
+                    tkfunc.cod = testar; //indice da palavra reservada
+                    tkfunc.categoria = PR;
                 }else{
                     //Se não for palavra reservada, é ID
-                    tk.categoria = ID;
-                    strcpy(tk.lexema, lexema);
+                    tkfunc.categoria = ID;
+                    strcpy(tkfunc.lexema, lexema);
                 }
 
-                return tk;
+                return tkfunc;
 
             }
 
@@ -222,9 +223,9 @@ token analisadorLexico(){
                 estado = 5;
                 ungetc(ch, arquivo);
                 digitos[++contadorDigito] = '\0'; //fecha a string
-                tk.categoria = CT_I;
-                tk.valor_int = atoi(digitos);
-                return tk;
+                tkfunc.categoria = CT_I;
+                tkfunc.valor_int = atoi(digitos);
+                return tkfunc;
             }
             break; /*BREAK ESTADO 3 */
 
@@ -248,8 +249,8 @@ token analisadorLexico(){
                 estado=7;
                 ungetc(ch, arquivo);
                 digitos[++contadorDigito]='\0'; //fecha a string
-                tk.categoria=CT_R; tk.valor_real=atof(digitos);
-                return tk;
+                tkfunc.categoria=CT_R; tkfunc.valor_real=atof(digitos);
+                return tkfunc;
             }
             break; /*BREAK ESTADO 6 */
 
@@ -262,9 +263,9 @@ token analisadorLexico(){
             }else{
                 estado = 18;
                 ungetc(ch, arquivo);
-                tk.categoria = SN;
-                tk.cod = DIV;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = DIV;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 15 */
 
@@ -283,7 +284,7 @@ token analisadorLexico(){
                 }
                 /*SE FIM DO ARQUIVO*/
                 if(feof(arquivo)){
-                    return tk;
+                    return tkfunc;
                 }
             }else{
                 erroAnalisadorLexico("Erro no comentário!");
@@ -315,9 +316,9 @@ token analisadorLexico(){
             /*SE LER OUTRO &*/
             if(ch == '&'){
                 estado = 24;
-                tk.categoria = SN;
-                tk.cod = AND;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = AND;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 23 */
 
@@ -325,9 +326,9 @@ token analisadorLexico(){
             /*SE LER OUTRO |*/
             if(ch == '|'){
                 estado = 26;
-                tk.categoria = SN;
-                tk.cod = OR;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = OR;
+                return tkfunc;
             }else{
                 erroAnalisadorLexico("Erro!");
             }
@@ -337,16 +338,16 @@ token analisadorLexico(){
             /*SE LER = É MAIOR_IG*/
             if(ch == '='){
                 estado = 29;
-                tk.categoria = SN;
-                tk.cod = MAIOR_IG;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = MAIOR_IG;
+                return tkfunc;
             /*SE LER OUTRO* É MAIOR_Q */
             }else{
                 estado = 28;
                 ungetc(ch, arquivo);
-                tk.categoria = SN;
-                tk.cod = MAIOR_Q;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = MAIOR_Q;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 27 */
 
@@ -354,16 +355,16 @@ token analisadorLexico(){
             /*SE LER = É MENOR_IG*/
             if(ch == '='){
                 estado = 31;
-                tk.categoria = SN;
-                tk.cod = MENOR_IG;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = MENOR_IG;
+                return tkfunc;
             /*SE LER OUTRO* É MENOR_Q */
             }else{
                 estado = 32;
                 ungetc(ch, arquivo);
-                tk.categoria = SN;
-                tk.cod = MENOR_Q;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = MENOR_Q;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 30 */
 
@@ -371,16 +372,16 @@ token analisadorLexico(){
             /*SE LER = É DIFERENTE*/
             if(ch == '='){
                 estado = 34;
-                tk.categoria = SN;
-                tk.cod = DIFERENTE;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = DIFERENTE;
+                return tkfunc;
             /*SE LER OUTRO* É NEGAÇÃO */
             }else{
                 estado = 35;
                 ungetc(ch, arquivo);
-                tk.categoria = SN;
-                tk.cod = NEGACAO;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = NEGACAO;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 33 */
 
@@ -388,16 +389,16 @@ token analisadorLexico(){
             /*SE LER = É COMPARAÇÃO*/
             if(ch == '='){
                 estado = 37;
-                tk.categoria = SN;
-                tk.cod = COMPARA;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = COMPARA;
+                return tkfunc;
             /*SE LER OUTRO* É ATRIB */
             }else{
                 estado = 38;
                 ungetc(ch, arquivo);
-                tk.categoria = SN;
-                tk.cod = ATRIB;
-                return tk;
+                tkfunc.categoria = SN;
+                tkfunc.cod = ATRIB;
+                return tkfunc;
             }
             break; /*BREAK ESTADO 36 */
 
@@ -407,9 +408,9 @@ token analisadorLexico(){
                 estado = 40;
                 stringLT[++contadorLT] = '\0'; //fecha a string
                 int aux = addTabelaLiteral(stringLT);
-                tk.categoria = CT_LT;
-                tk.posicao = aux;
-                return tk;
+                tkfunc.categoria = CT_LT;
+                tkfunc.posicao = aux;
+                return tkfunc;
             /*SE LER OUTRO* CONTINUA NO 39 ATÉ */
             }else{
                 estado = 39;
@@ -442,9 +443,9 @@ token analisadorLexico(){
             /*SE LER ' */
             if (ch == '\''){
                 estado=44;
-                tk.categoria = CT_C;
-                tk.valor_ch = armazenarCaracter;
-                return tk;
+                tkfunc.categoria = CT_C;
+                tkfunc.valor_ch = armazenarCaracter;
+                return tkfunc;
             /*SE LER OUTRO* */
             }else{
                 erroAnalisadorLexico("Caracter mal formada");
@@ -467,9 +468,9 @@ token analisadorLexico(){
             /* SE LEU ' */
             if (ch == '\'') {
                 estado = 49;
-                tk.categoria = CT_C;
-                tk.valor_ch = '\0';
-                return tk;
+                tkfunc.categoria = CT_C;
+                tkfunc.valor_ch = '\0';
+                return tkfunc;
             }else{
                 erroAnalisadorLexico("Caracter mal formada");
             }
@@ -480,8 +481,8 @@ token analisadorLexico(){
             if (ch == '\'') {
                 //ao invés de retornar token, aumenta a linha
                 //estado = 48;
-                //tk.categoria = CT_C;
-                //tk.valor_ch = '\n';
+                //tkfunc.categoria = CT_C;
+                //tkfunc.valor_ch = '\n';
                 estado = 0;
                 linhas++;
             }else{
