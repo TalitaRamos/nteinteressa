@@ -1,4 +1,3 @@
-
 #include "analex.h"
 
 //Varíavel Global para contar linha
