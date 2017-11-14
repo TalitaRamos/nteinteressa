@@ -69,7 +69,7 @@ int fator(){
     /*Se for ID*/
     else if(tk.categoria == ID){
 
-        if(tknext.cod != PARENTESIS_ABRE){
+        if(tknext.categoria == SN && tknext.cod != PARENTESIS_ABRE){
             //Se for somente ID
             printf("\nsomente id");
             return 1;
@@ -94,20 +94,25 @@ int fator(){
             analex();
             expr();
 
+            //Se o proximo token for um sinal
+            if(tknext.categoria == SN){
+                //E Se esse proximo token for VIRG
+                if(tknext.cod == VIRG){
+                    analex();
+                    while(1){
+                        analex();
+                        expr();
+                        if(!(tknext.cod == VIRG)){
+                            break;
+                        }
+                        analex();
+
+                    }//fim-while
+
+                }//fim-E Se esse proximo token for VIRG
+            }//fimSe o proximo token for um sinal
+
             analex();
-
-            //Laço para checar as ocorrencias de vÃ­rgulas e expr consecutivas
-            while(1){
-                //Se for vírgula, continua chamando expr
-                if(tk.categoria == SN && tk.cod == VIRG){
-                    analex();
-                    expr();
-                    analex();
-                }else{
-                    break;
-                }
-            }//fim-while
-
             //If para checar se houve fechar parentesis
             if(!(tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
                 //Erro faltando parentesis
@@ -127,10 +132,11 @@ int fator(){
     /* Se for somente ( expr ) */
     //Checar se houve abre parentesis
     else if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
-
+        printf("\nEntrei no (expr)");
         analex();
         expr();
 
+        analex();
         //If para checar se houve fechar parentesis
         if(!(tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
             //Erro faltando parentesis
@@ -171,7 +177,7 @@ void expr(){
         }//fim-se o proximo token for op relacional
         else{
             //Erro, esperando operador relacional
-            erroSintatico("Falta operador relacional");
+            //erroSintatico("Falta operador relacional");
         }
     }
 }
@@ -365,7 +371,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        expr();
+        fator();
 
 
         fclose(arquivo);
