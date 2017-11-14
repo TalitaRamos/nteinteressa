@@ -2,6 +2,14 @@
 #include "anasin.h"
 #include "controlador_tab.h"
 
+void erroSintatico(char erro[]){
+
+    printf("\nERRO na Linha %d: %s", linha, erro);
+
+    system("pause");
+    exit(1);
+}
+
 void termo(){
     fator();
 
@@ -19,7 +27,7 @@ void termo(){
     }
 }
 
-/*Fun√ß√£o que pega um token a frente da leitura para verifica√ß√£o*/
+/*FunÁ„o que pega um token a frente da leitura para verificaÁ„o*/
 token next_token()
 {
     token tk;
@@ -36,21 +44,39 @@ int fator(){
 
     /*Se for ID*/
     if(tk.categoria == ID){
+
+        if(tknext.cod != PARENTESIS_ABRE){
+            //Se for somente ID
+            return 1;
+        }
+
+        //Ve o proximo token
         analex();
 
         //Se for abrir parentesis
         if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
+
+            //Se o prÛximo token for fecha parentesis
+            if(tknext.categoria == SN && tknext.cod ==  PARENTESIS_FECHA){
+
+                //Ve o proximo token e sai
+                analex();
+                return 1;
+            }
 
             //Chama a funÁ„o de express√£o
             analex();
             expr();
 
             analex();
+
             //LaÁo para checar as ocorrencias de v√≠rgulas e expr consecutivas
             while(1){
-                //Se for v√≠rgula, continua chamando expr
+                //Se for vÌrgula, continua chamando expr
                 if(tk.categoria == SN && tk.cod = VIRG){
-                    //expr();
+                    analex();
+                    expr();
+                    analex();
                 }else{
                     break;
                 }
@@ -59,15 +85,16 @@ int fator(){
             //If para checar se houve fechar parentesis
             if(!(tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
                 //Erro faltando parentesis
+                erroSintatico("Falta fecha parentesis");
             }
+
+            return 1;
 
         }//FIM-Se for abrir parentesis
         else{
-            return;
+            //ERRO FALTANDO FECHAR PARENTESIS
+            erroSintatico("Falta fecha parentesis");
         }//FIM-ELSE
-
-        //Se for somente ID
-        return 1;
 
     }//Fim-Se for ID
 
@@ -75,18 +102,22 @@ int fator(){
     //Checar se houve abre parentesis
     if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
 
-        //Chamar a fun√ß√£o express√£o
-        //expr();
+        analex();
+        expr();
 
         //If para checar se houve fechar parentesis
         if(!(tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
             //Erro faltando parentesis
+            erroSintatico("Falta fecha parentesis");
         }
+
+        return 1;
     }
 
 
-    /* Se for NEGA√á√ÉO de express√£o */
+    /* Se for negaÁ„o de express„o */
     if(tk.categoria == SN && tk.cod == NEGACAO){
+        analex();
         fator();
     }
 
@@ -110,6 +141,7 @@ void expr(){
         }//fim-se o proximo token for op relacional
         else{
             //Erro, esperando operador relacional
+            erroSintatico("Falta operador relacional");
         }
     }
 }
@@ -135,6 +167,7 @@ void expr_simp()
                 }else{
 
                     /*ERRO DE OPERADOR essa categoria √© obrigatorio*/
+                    erroSintatico("Falta operador");
 
                     break;
                 }
@@ -145,6 +178,7 @@ void expr_simp()
 
 
             /*ERRO NO TIPO DE OPERADOR USADO*/
+            erroSintatico("Tipo de operador incorreto");
 
 
         }//else
@@ -163,6 +197,7 @@ void expr_simp()
             }else{
 
                  /*ERRO DE OPERADOR essa categoria √© obrigatorio*/
+                 erroSintatico("Falta operador");
 
                 break;
             }
@@ -215,7 +250,7 @@ void tipos_param(){
     if(tk.categoria == PR){
 
         //Se a palavra reservada for semparam
-        if(strcmp("semparam", PAL_RESERV[tk.cod])==0){
+        if(tk.cod == SEMPARAM){
             return;
 
         }//fim-se semparam
@@ -224,6 +259,7 @@ void tipos_param(){
     else{
         //SE FOR TIPO
         if(tipo()>0){
+        analex();
 
             //se for id
             if(tk.categoria == ID){
@@ -232,41 +268,53 @@ void tipos_param(){
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
 
+                    analex();
+
                     while(1){
                         if(tk.categoria == SN && tk.cod == VIRG){
 
+                            analex();
+
                             if(tipo()>0){
+
+                                analex();
 
                                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                                     controlador_TabSimb(EMPILHAR, tk.lexema, LOCAL, PARAM, SIM_ZUMBI);
                                 }else{
                                     //Erro id j√° existente na tabela
+                                    erroSintatico("ID j· existente na tabela");
                                 }
 
                             }//fim-tipo
                             else{
                                 //ERRO TIPO INVALIDO
+                                erroSintatico("Tipo invalido");
                             }
 
                         }//Fim - se for virgula
                         else{
                             //ERRO n√£o tem virguls
+                            erroSintatico("Esperado virgula");
                             break;
                         }
                     }//FIM WHILE
 
                 }else{
                     //Erro id j√° existente na tabela
+                    erroSintatico("ID j· existente na tabela");
                 }
 
             }//fim-se for id
             else{
                 //Esperado id
+                erroSintatico("Era esperado ID");
             }
 
         }//fim-tipo
         else{
             //erro sint√°tico TIPO INVALIDO
+            erroSintatico("Tipo invalido");
         }
 
     }//FIM-ELSE PR
