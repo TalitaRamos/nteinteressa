@@ -291,6 +291,7 @@ int tipo(){
     return -1;
 }
 
+/*OK*/
 void tipos_param(){
 
     //Se for palavra reservada
