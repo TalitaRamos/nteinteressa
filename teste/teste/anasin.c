@@ -372,7 +372,7 @@ void tipos_param(){
 }
 
 
-/*CONSTRUÇÃO*/
+/*OK*/
 void tipos_p_opc(){
 
     //Se for palavra reservada
@@ -383,63 +383,68 @@ void tipos_p_opc(){
     else{
         //SE FOR TIPO
         if(tipo()>0){
-        printf("\n Tipos_param - É tipo!");
-        analex();
 
-            //se for id
-            if(tk.categoria == ID){
+            printf("\n Tipos_param_opc - É tipo!");
 
-                //Se nÃ£o houver o ID na tabela, ele insere
+            //Se o próximo token for ID
+            if(tknext.categoria == ID){
+                //Pega esse token
+                analex();
+                //Se não já existir na tabela
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
 
-                    //E Se esse proximo token for VIRG
-                    if(tknext.categoria == SN && tknext.cod == VIRG){
-                        analex();
-                        while(1){
-                            analex();
-                            //Se for tipo
-                            if(tipo()>0){
-                                analex();
-                                //Se for ID
-                                if(tk.categoria == ID){
-                                    if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                        controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
-                                    }else{
-                                        erroSintatico("ID já existente");
-                                    }
-                                }//Fim-Se for ID
-                                else{
-                                    erroSintatico("ID inválido");
-                                }
 
-                            }//Fim-Se for tipo
-                            else{
-                                erroSintatico("Tipo inválido");
-                            }
-
-
-                            if(!(tknext.categoria == SN && tknext.cod == VIRG)){
-                                break;
-                            }
-                            analex();
-
-                        }//fim-while
-
-                    }//fim-E Se esse proximo token for VIRG
-                    else if(tknext.categoria == ID || tknext.categoria == PR){
-                        erroSintatico("É esperado virgula");
-                    }
-
-                }else{
-                    //Erro id jÃ¡ existente na tabela
+                }
+                else{
+                    //Erro id ja¡ existente na tabela
                     erroSintatico("ID já existente na tabela");
                 }
+            }//fim-Se o próximo token for ID
 
-            }//fim-se for id
-            else{
-                //Esperado id
-                erroSintatico("Era esperado ID");
+            //Se o próximo token for vírgula, tem que entrar no while
+            else if(tknext.categoria == SN && tknext.cod == VIRG){
+                //Ta na virgula
+                analex();
+                while(1){
+                    analex();
+                    //Se for tipo
+                    if(tipo()>0){
+
+                        //Se o próximo token for ID
+                        if(tknext.categoria == ID){
+                            //Pega esse token
+                            analex();
+                            //Se não já existir na tabela
+                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+
+                            }//fimSe não já existir na tabela
+                            else{
+                                //Erro id ja¡ existente na tabela
+                                erroSintatico("ID já existente na tabela");
+                            }
+                        }//fim-Se o próximo token for ID
+
+
+                    }//Fim-Se for tipo
+                    else{
+                        erroSintatico("Tipo inválido");
+                    }
+
+                    if(!(tknext.categoria == SN && tknext.cod == VIRG)){
+                        break;
+                    }
+                    analex();
+
+                }//fim-while
+
+
+            }//Fim-Se o próximo token for vírgula
+
+            //Se o próximo token não for virgula nem tipo
+            else if(tipo()<0 && !(tknext.categoria == SN && tknext.cod == VIRG)){
+                erroSintatico("É esperado ID ou TIPO");
             }
 
         }//fim-tipo
@@ -468,7 +473,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        tipos_param();
+        tipos_p_opc();
 
 
         fclose(arquivo);
