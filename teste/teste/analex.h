@@ -117,8 +117,6 @@ FILE *arquivo;
 int linhas;
 char tabLiteral[TAM_TABLITERAL][TAM_TABLITERAL]; //Tabela de Cadeias Literais
 
-
-
 //ASSINATURA DE FUNÇÕES
 int addTabelaLiteral(char adcionar[]);
 int comparaPalavraReservada(char palavra[]);
