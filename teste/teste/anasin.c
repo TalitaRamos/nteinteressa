@@ -294,18 +294,14 @@ int tipo(){
 void tipos_param(){
 
     //Se for palavra reservada
-    if(tk.categoria == PR){
-
+    if(tk.categoria == PR && tk.cod == SEMPARAM){
         //Se a palavra reservada for semparam
-        if(tk.cod == SEMPARAM){
-            return;
-
-        }//fim-se semparam
-
+        return;
     }
     else{
         //SE FOR TIPO
         if(tipo()>0){
+        printf("\n Tipos_param - … tipo!");
         analex();
 
             //se for id
@@ -315,37 +311,43 @@ void tipos_param(){
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
 
-                    analex();
-
-                    while(1){
-                        if(tk.categoria == SN && tk.cod == VIRG){
-
+                    //E Se esse proximo token for VIRG
+                    if(tknext.categoria == SN && tknext.cod == VIRG){
+                        analex();
+                        while(1){
                             analex();
-
+                            //Se for tipo
                             if(tipo()>0){
-
                                 analex();
-
-                                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                    controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
-                                }else{
-                                    //Erro id j√° existente na tabela
-                                    erroSintatico("ID j· existente na tabela");
+                                //Se for ID
+                                if(tk.categoria == ID){
+                                    if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                                        controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                                    }else{
+                                        erroSintatico("ID j· existente");
+                                    }
+                                }//Fim-Se for ID
+                                else{
+                                    erroSintatico("ID inv·lido");
                                 }
 
-                            }//fim-tipo
+                            }//Fim-Se for tipo
                             else{
-                                //ERRO TIPO INVALIDO
-                                erroSintatico("Tipo invalido");
+                                erroSintatico("Tipo inv·lido");
                             }
 
-                        }//Fim - se for virgula
-                        else{
-                            //ERRO n√£o tem virguls
-                            erroSintatico("Esperado virgula");
-                            break;
-                        }
-                    }//FIM WHILE
+
+                            if(!(tknext.categoria == SN && tknext.cod == VIRG)){
+                                break;
+                            }
+                            analex();
+
+                        }//fim-while
+
+                    }//fim-E Se esse proximo token for VIRG
+                    else if(tknext.categoria == ID || tknext.categoria == PR){
+                        erroSintatico("… esperado virgula");
+                    }
 
                 }else{
                     //Erro id j√° existente na tabela
@@ -385,7 +387,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        fator();
+        tipos_param();
 
 
         fclose(arquivo);
