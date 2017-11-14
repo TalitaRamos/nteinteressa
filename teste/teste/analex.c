@@ -509,40 +509,6 @@ void analex(){
 
 void imprimirTK(token aux){
 
-     //printf("\t\n<");
-
-        if(aux.categoria == PR){
-            //printf("PR, %s> ", PAL_RESERV[aux.cod]);
-        }
-        if(aux.categoria == ID){
-            //printf("ID, %s> ", aux.lexema);
-        }
-        if(aux.categoria == SN){
-            //printf("SN, %s> ", TABELASINAIS[aux.cod]);
-        }
-        if(aux.categoria == CT_I){
-            //printf("CT_I, %d> ", aux.valor_int);
-        }
-        if(aux.categoria == CT_R){
-            //printf("CT_R, %8.2f> ", aux.valor_real);
-        }
-        if(aux.categoria == CT_C){
-            //CT_C: printf("CT_C, %c> ", aux.valor_ch);
-        }
-        if(aux.categoria == CT_LT){
-            //CT_LT: printf("CT_LT, %s> ", tabLiteral[aux.posicao]);
-        }
-        if(aux.categoria == FIMARQ){
-            //printf("FIMARQ, 0>");
-        }
-
-        if(aux.categoria==FIMARQ){
-            //exit(1);
-        }
-}
-
-void imprimirTK2(token aux){
-
      printf("\t\n<");
 
         if(aux.categoria == PR){

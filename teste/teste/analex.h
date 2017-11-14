@@ -126,5 +126,4 @@ void erroAnalisadorLexico(char descricao[]);
 token analisadorLexico();
 void analex();
 void imprimirTK(token aux);
-void imprimirTK2(token aux);
 #endif

@@ -326,33 +326,13 @@ int main(){
 	if ( (arquivo = fopen(nomeArquivo,"r")) != NULL ){
         printf("\n\tArquivo aberto com sucesso!\n");
 
-        //chamar o analisador sintatico
-
         analex();
         analex();
 
-        imprimirTK2(tk);
-        imprimirTK2(tknext);
+        imprimirTK(tk);
+        imprimirTK(tknext);
 
-        //tk = analisadorLexico();
-        //tknext = analisadorLexico();
-
-        //imprimirTK(tk);
-        //imprimirTK(tknext);
-
-
-        /*while(1){
-            tk = analisadorLexico();
-            imprimirTK(tk);
-            tknext = analisadorLexico();
-            imprimirTK(tknext);
-
-            tk=tknext;
-            imprimirTK(tk);
-
-        }*/
-
-        //opr_rel();
+        opr_rel();
 
 
 
