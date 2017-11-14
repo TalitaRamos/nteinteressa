@@ -26,34 +26,51 @@ int opr_rel()
     return 0;
 }
 
+/*OK*/
 void termo(){
-    fator();
 
-    while(1){
-        if(tk.categoria == SN)
-        {
-            if(tk.cod == MULT || tk.cod == DIV || tk.cod == AND)
-            {
+    fator();
+    printf("\nTo em termo sai de fator");
+
+    //Se o proximo token for um sinal
+    if(tknext.categoria == SN){
+
+        //E Se esse proximo token for * / ou &&
+        if(tknext.cod == MULT || tknext.cod == DIV || tknext.cod == AND){
+            analex();
+            while(1){
                 analex();
                 fator();
-            } else {
-                break;
-            }
+                if(!(tknext.cod == MULT || tknext.cod == DIV || tknext.cod == AND)){
+                    break;
+                }
+                analex();
+
+            }//fim-while
+
+        }//fim-E Se esse proximo token for * / ou &&
+        else{
+            erroSintatico("É esperado um operador *, / ou AND");
         }
-    }
+
+    }//fimSe o proximo token for um sinal
 }
 
+
+/*observando expr*/
 int fator(){
     /*Se for Inteiro, Real ou Caractere*/
     if(tk.categoria == CT_I || tk.categoria == CT_R || tk.categoria == CT_C  || tk.categoria == CT_LT){
+        printf("\nnitcon realcon caraccon cadeiacon");
         return 1;
     }
 
     /*Se for ID*/
-    if(tk.categoria == ID){
+    else if(tk.categoria == ID){
 
         if(tknext.cod != PARENTESIS_ABRE){
             //Se for somente ID
+            printf("\nsomente id");
             return 1;
         }
 
@@ -67,6 +84,7 @@ int fator(){
             if(tknext.categoria == SN && tknext.cod ==  PARENTESIS_FECHA){
 
                 //Ve o proximo token e sai
+                printf("\nsomente e parentesis");
                 analex();
                 return 1;
             }
@@ -107,7 +125,7 @@ int fator(){
 
     /* Se for somente ( expr ) */
     //Checar se houve abre parentesis
-    if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
+    else if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
 
         analex();
         expr();
@@ -123,9 +141,12 @@ int fator(){
 
 
     /* Se for negação de expressão */
-    if(tk.categoria == SN && tk.cod == NEGACAO){
+    else if(tk.categoria == SN && tk.cod == NEGACAO){
         analex();
         fator();
+    }
+    else{
+        erroSintatico("Era esperador fator");
     }
 
     return 0;
@@ -159,57 +180,66 @@ void expr_simp()
     /*Se o termo começar com + ou - */
     if(tk.categoria == SN)
     {
-
         if(tk.cod == SOMA || tk.cod == SUB)
         {
+
             analex();
             termo();
-            /*While se houver mais e 1 termo*/
-            while(1)
-            {
-                if(tk.cod == SOMA || tk.cod == SUB || tk.cod == OR)
-                {
+
+            //Se o proximo token for um sinal
+            if(tknext.categoria == SN){
+                //E Se esse proximo token for + - ou &||
+                if(tknext.cod == SOMA || tknext.cod == SUB || tknext.cod == OR){
                     analex();
-                    termo();
-                }else{
+                    while(1){
+                        analex();
+                        termo();
+                        if(!(tknext.cod == SOMA || tknext.cod == SUB || tknext.cod == OR)){
+                            break;
+                        }
+                        analex();
 
-                    /*ERRO DE OPERADOR essa categoria Ã© obrigatorio*/
-                    erroSintatico("Falta operador");
+                    }//fim-while
 
-                    break;
+                }//fim-E Se esse proximo token for + - ou &||
+                else{
+                    erroSintatico("É esperando um operador +, - ou OR");
                 }
-
-            }//While
+            }//fim-Se o proximo token for um sinal
 
         }else{//else da categoria
 
 
             /*ERRO NO TIPO DE OPERADOR USADO*/
-            erroSintatico("Tipo de operador incorreto");
+            erroSintatico("É esperado + ou -");
 
 
         }//else
 
     }else{
 
-        analex();
         termo();
-        /*While se houver mais e 1 termo*/
-        while(1)
-        {
-            if(tk.cod == SOMA || tk.cod == SUB || tk.cod == OR)
-            {
+
+        //Se o proximo token for um sinal
+        if(tknext.categoria == SN){
+            //E Se esse proximo token for + - ou &||
+            if(tknext.cod == SOMA || tknext.cod == SUB || tknext.cod == OR){
                 analex();
-                termo();
-            }else{
+                while(1){
+                    analex();
+                    termo();
+                    if(!(tknext.cod == SOMA || tknext.cod == SUB || tknext.cod == OR)){
+                        break;
+                    }
+                    analex();
 
-                 /*ERRO DE OPERADOR essa categoria Ã© obrigatorio*/
-                 erroSintatico("Falta operador");
+                }//fim-while
 
-                break;
+            }//fim-E Se esse proximo token for + - ou &||
+            else{
+                erroSintatico("É esperando um operador +, - ou OR");
             }
-
-        }//While
+        }//fim-Se o proximo token for um sinal
 
     }// else do SN
 
@@ -332,8 +362,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        opr_rel();
-
+        expr_simp();
 
 
         fclose(arquivo);
