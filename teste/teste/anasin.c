@@ -9,6 +9,7 @@ void erroSintatico(char erro[]){
     exit(1);
 }
 
+/*OK*/
 int opr_rel()
 {
     if(tk.categoria == SN)
@@ -50,7 +51,7 @@ void termo(){
 
         }//fim-E Se esse proximo token for * / ou &&
         else{
-            erroSintatico("É esperado um operador *, / ou AND");
+            //erroSintatico("É esperado um operador *, / ou AND");
         }
 
     }//fimSe o proximo token for um sinal
@@ -163,6 +164,7 @@ void expr(){
         //se o proximo token for op relacional
         if(tknext.cod == COMPARA || tknext.cod == DIFERENTE || tknext.cod == MAIOR_Q || tknext.cod == MENOR_Q || tknext.cod == MAIOR_IG || tknext.cod == MENOR_IG){
             analex();
+            opr_rel();
             analex();
             expr_simp();
 
@@ -175,6 +177,7 @@ void expr(){
 }
 
 
+/*OK*/
 void expr_simp()
 {
     /*Se o termo começar com + ou - */
@@ -203,7 +206,7 @@ void expr_simp()
 
                 }//fim-E Se esse proximo token for + - ou &||
                 else{
-                    erroSintatico("É esperando um operador +, - ou OR");
+                    //erroSintatico("É esperando um operador +, - ou OR");
                 }
             }//fim-Se o proximo token for um sinal
 
@@ -237,7 +240,7 @@ void expr_simp()
 
             }//fim-E Se esse proximo token for + - ou &||
             else{
-                erroSintatico("É esperando um operador +, - ou OR");
+                //erroSintatico("É esperando um operador +, - ou OR");
             }
         }//fim-Se o proximo token for um sinal
 
@@ -362,7 +365,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        expr_simp();
+        expr();
 
 
         fclose(arquivo);
