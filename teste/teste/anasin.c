@@ -255,12 +255,25 @@ void expr_simp()
 }//VOID
 
 
-
+/*OK*/
 int tipo(){
 
     //Se for palavra reservada
     if(tk.categoria == PR){
 
+        if(tk.cod == CARACTER){
+            return tk.cod;
+        }else if(tk.cod == INTEIRO){
+            return tk.cod;
+        }else if(tk.cod == REAL){
+            return tk.cod;
+        }else if(tk.cod = BOOLEANO){
+            return tk.cod;
+        }else{
+            return -1;
+        }
+
+        /*
         if(strcmp("caracter", PAL_RESERV[tk.cod])==0){
             return tk.cod;
         }else if(strcmp("inteiro", PAL_RESERV[tk.cod])==0){
@@ -272,6 +285,7 @@ int tipo(){
         }else{
             return -1;
         }
+        */
 
     }//FIM-se for PR
     return -1;
