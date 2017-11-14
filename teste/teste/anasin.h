@@ -1,6 +1,7 @@
 #ifndef _ANASIN_H
 #define _ANASIN_H
-#include "analex.h"
+#include "analex.c"
+#include "controlador_tab.c"
 #include "controlador_tab.h"
 
 enum{
@@ -33,5 +34,5 @@ void expr_simp();
 int opr_rel();
 int tipo();
 void tipos_param();
-
+void analex();
 #endif

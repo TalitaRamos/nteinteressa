@@ -16,7 +16,11 @@ int opr_rel()
         if(tk.cod == COMPARA || tk.cod == DIFERENTE || tk.cod == MAIOR_IG || tk.cod == MAIOR_Q || tk.cod == MENOR_IG || tk.cod == MENOR_Q)
         {
             return 1;
+        }else{
+            erroSintatico("Esperado operador relacional");
         }
+    }else{
+        erroSintatico("Esperado sinal");
     }
 
     return 0;
@@ -323,8 +327,40 @@ int main(){
         printf("\n\tArquivo aberto com sucesso!\n");
 
         //chamar o analisador sintatico
-        analex();
-        analex();
+
+        tk = analisadorLexico();
+        imprimirTK(tk);
+        tknext = analisadorLexico();
+        imprimirTK(tknext);
+
+        //tknext = analisadorLexico();
+
+        //analex();
+
+        imprimirTK2(tk);
+        imprimirTK2(tknext);
+
+        //tk = analisadorLexico();
+        //tknext = analisadorLexico();
+
+        //imprimirTK(tk);
+        //imprimirTK(tknext);
+
+
+        /*while(1){
+            tk = analisadorLexico();
+            imprimirTK(tk);
+            tknext = analisadorLexico();
+            imprimirTK(tknext);
+
+            tk=tknext;
+            imprimirTK(tk);
+
+        }*/
+
+        //opr_rel();
+
+
 
         fclose(arquivo);
     }

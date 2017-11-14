@@ -509,110 +509,168 @@ void cmd(){
 
                 case PARA:
                     analex();
-                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
+                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE)// if 1
+                    {
                         analex();
-                        if(tknext.categoria == ID){
+                        if(tknext.categoria == ID) //if 2
+                        {
                             analex();
                             atrib();
-                            if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                            if(!(tknext.categoria == SN && tk.cod == PT_VIRG))//if 7
                             {
-                                analex();
-                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
-                                {
-                                    analex();
-                                    if(tknext.categoria == ID){
-                                        analex();
-                                        atrib();
-                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+                                /*ERRO POR FALTA DE PONTO VIRGULA*/
 
-                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
-
-                                    }else {
-                                        cmd();
-                                    }// else Negacao PARENTESIS_FECHA
-
-                                    //}// else ID OLHAR ISSO
                             }else{
+
+                                /*SE LÊ VIRGULA*/
                                 analex();
-                                expr();
-                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 8
                                 {
-                                    analex();
-                                    if(tknext.categoria == ID){
-                                        analex();
-                                        atrib();
-                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+                                            analex();
+                                            if(tknext.categoria == ID) //if 5
+                                            {
+                                                analex();
+                                                atrib();
+                                            }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 9
+                                            {
+                                                analex();// Vai para o )
+                                                analex();//Vai para o cmd
+                                                cmd();
+                                            }else {
 
-                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+                                                /*ERRO POR FALTA DE FECHA PARENTESE*/
 
-                                    }else
-                                    {
-                                        cmd();
-                                    }// else da negacao de FECHA_PARENTESE
+                                             }// else 9
+                               // }else {
 
-                                    //}// else ID
-                            } else
-                                {
-                                    /*ERRO POR FALTA DE PONTO VIRGULA*/
 
-                                }// else do PT_VIRG expre
+                               // } else{
 
-                            }// else if PT_VIRG
 
-                            }//if PT_VIRG
+                                }else{// abre else do if 8
 
-                        }else {
-                            /*Verifica quando não existir atrib*/
-                            if(tknext.categoria == SN && tk.cod == PT_VIRG)
+                                           analex();
+                                           expr();
+                                           if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 11
+                                            {
+                                                    analex();
+                                                    if(tknext.categoria == ID)
+                                                    {
+                                                        analex();
+                                                        atrib();
+                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
+                                                        {
+                                                            cmd();
+                                                        }else{
+
+                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+
+                                                        }//fecha else do if 12
+                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 14
+                                                        {
+                                                            cmd();
+                                                        }else
+                                                        {
+
+                                                            /*ERRO*/
+
+                                                        }// else fecha do else if 14
+
+                                            }else
+                                            {
+                                                    /*ERRO POR FALAT DE VIRGULA*/
+
+                                            }//fecha else do if 11
+
+                                }// fecha else do if 8
+
+                            }//else do if 7
+
+                        }else if(tknext.categoria == SN && tk.cod == PT_VIRG){// else if do if 2
+                            analex();
+                            if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 3
                             {
-                                analex();
-                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
-                                {
-                                    analex();
-                                    if(tknext.categoria == ID){
-                                        analex();
-                                        atrib();
-                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+                                                analex();
+                                                if(tknext.categoria == ID)
+                                                    {
+                                                        analex();
+                                                        atrib();
+                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 16
+                                                        {
+                                                            analex();
+                                                            cmd();
+                                                        }else{
 
-                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
 
-                                    }else {
-                                        cmd();
-                                    }// else Negacao PARENTESIS_FECHA
+                                                        }//fecha else do if 16
+                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 18
+                                                        {
+                                                            analex();
+                                                            cmd();
+                                                        }else
+                                                        {
 
-                                 }else{
+                                                            /*ERRO*/
 
-                                }//else do segundo PT_VIRG
+                                                        }// else fecha do else if 18
+
+
+
+
                             }else{
-                                analex();
-                                expr();
-                                if(tknext.categoria == SN && tk.cod == PT_VIRG)
-                                {
-                                    analex();
-                                    if(tknext.categoria == ID){
-                                        analex();
-                                        atrib();
-                                    }else if(!(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+                                           analex();
+                                           expr();
+                                           if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 11
+                                            {
+                                                    analex();
+                                                    if(tknext.categoria == ID)
+                                                    {
+                                                        analex();
+                                                        atrib();
+                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
+                                                        {
+                                                            analex();
+                                                            cmd();
+                                                        }else{
 
-                                        /*ERRO ESPERAVA-SE FECHA PARENTESE*/
+                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
 
-                                    }else
-                                    {
-                                        cmd();
-                                    }// else da negacao de FECHA_PARENTESE
+                                                        }//fecha else do if 12
+                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 14
+                                                        {
+                                                            analex();
+                                                            cmd();
+                                                        }else
+                                                        {
+
+                                                            /*ERRO*/
+
+                                                        }// else fecha do else if 14
+
+                                            }else
+                                            {
+                                                    /*ERRO POR FALAT DE VIRGULA*/
+
+                                            }//fecha else do if 11
 
 
 
-                        }// else ID
-
-                    }//if PARENTESIS_ABRE
 
 
+                            }//fecha else do if 3
+
+                        }else
+                        {
+                            /*ERRO DE TIPO DESCONHECDO*/
+
+                        }// else if 2
                     }else{
 
-                        /* ERRO ESPERAVA-SE ABRE PARENTESE*/
+                    /* ERRO ESPERAVA-SE ABRE PARENTESE*/
 
-                    }//else PARENTESIS_ABRE
+                    }//else if 1
+
 
                     break;
 
@@ -645,7 +703,6 @@ void cmd(){
 
     }//If PR ou ID ou SN
 }//void
-
 
 
 
