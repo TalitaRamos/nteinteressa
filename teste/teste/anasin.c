@@ -62,7 +62,7 @@ void termo(){
 int fator(){
     /*Se for Inteiro, Real ou Caractere*/
     if(tk.categoria == CT_I || tk.categoria == CT_R || tk.categoria == CT_C  || tk.categoria == CT_LT){
-        printf("\nnitcon realcon caraccon cadeiacon");
+        printf("\ninttcon realcon caraccon cadeiacon");
         return 1;
     }
 
@@ -155,7 +155,7 @@ int fator(){
 }
 
 
-/*Mexi aqui*/
+/*OK*/
 void expr(){
 
     expr_simp();
