@@ -505,16 +505,6 @@ void cmd(){
                     }
                     break;
 
-                    /*printf("\nEntrei chaves abre");
-                    analex();
-                    while(tk.categoria != SN && tk.cod!=CHAVES_FECHA){
-                        printf("\nEntrei while");
-                        analex();
-                        cmd();
-                    }
-                    analex();
-                    break;*/
-
                 default:
                     /*ERRO DE CATEGORIA*/
                     erroSintatico("Cmd invalido");
