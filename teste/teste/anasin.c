@@ -524,7 +524,14 @@ void cmd(){
                         if(tk.categoria == SN && tk.cod == PARENTESIS_FECHA){
                             analex();
                             cmd();
-                            /*OBSERVAÇÃO OLHAR DEPOIS A CHAMADA RECURSIVA*/
+
+                            //Saiu de CMD
+                            //Se o próximo token for SENAO
+                            if(tknext.categoria == PR && tknext.cod == SENAO){
+                                analex(); //vai estar em senao
+                                analex();
+                                cmd();
+                            }
 
                         }//if PARENTESIS_FECHA
                         else{
@@ -533,18 +540,11 @@ void cmd(){
                         }
 
                     }//if PARENTESIS_ABRE
-                else {
-
-                    /*ERRO DE NÂO ABERTURA DE PARENTÊSE*/
-                    erroSintatico("Esperado (");
-                }
+                    else {
+                        /*ERRO DE NÂO ABERTURA DE PARENTÊSE*/
+                        erroSintatico("Esperado (");
+                    }
                     break;
-
-                case SENAO:
-                    analex();
-                    cmd();
-                    break;
-
                 case ENQUANTO:
                     analex();
                     if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
@@ -557,10 +557,12 @@ void cmd(){
                         }else{
 
                             /*ESPERADO FECHA PARENTESE*/
+                            erroSintatico("Esperado )");
                         }
                     }else {
 
                         /*ESPERADO ABRE PARENTESE*/
+                        erroSintatico("Esperado (");
                     }
                     break;
 
@@ -732,19 +734,20 @@ void cmd(){
                     break;
 
                 case RETORNE:
-                    analex();
-                    if(!(tk.categoria == SN && tk.cod == PT_VIRG)){
-                        expr();
+                    if(tknext.categoria == SN && tknext.cod == PT_VIRG){
                         analex();
-                        if(tk.categoria == SN && tk.cod == PT_VIRG){
-
-                        }else{
-
-                            /*ERRO ESPERAVA-SE UM PONTO E VIRGULA*/
-
-                        }
+                        break;
                     }
 
+                    //Se não entrou no if do pt e virg
+                    analex();
+                    expr();
+                    analex();
+                    if(tk.categoria == SN && tk.cod == PT_VIRG){
+                        break;
+                    }else{
+                        erroSintatico("Falta PT_VIRG ;");
+                    }
                     break;
 
                 default:
@@ -755,7 +758,13 @@ void cmd(){
             }//switch
 
 
-        }//if categoria
+        }//if PR
+
+        //SE FOR ID
+        if(tk.categoria == ID){
+
+
+        }//fim- if id
 
 
     }//If PR ou ID ou SN
@@ -777,7 +786,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        termo();
+        cmd();
 
 
         fclose(arquivo);
