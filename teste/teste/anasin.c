@@ -479,7 +479,7 @@ void atrib(){
 
 }
 
-/*EM TESTES*/
+/*EM TESTES (pt_virg e {cmd} ok)*/
 void cmd(){
     if(tk.categoria == PR || tk.categoria == ID || tk.categoria == SN){
 
@@ -489,16 +489,32 @@ void cmd(){
             switch(tk.cod){
 
                 case PT_VIRG:
-                    analex();
+                    //analex();
                     break;
 
                 case CHAVES_ABRE:
+                    printf("\nEntrei chaves abre");
+                    while(1){
+                        printf("\nEntrei while");
+                        if((tknext.categoria == SN && tknext.cod==CHAVES_FECHA)){
+                            analex();
+                            break;
+                        }
+                        analex();
+                        cmd();
+                    }
+                    break;
+
+                    /*printf("\nEntrei chaves abre");
                     analex();
                     while(tk.categoria != SN && tk.cod!=CHAVES_FECHA){
+                        printf("\nEntrei while");
+                        analex();
                         cmd();
                     }
                     analex();
-                    break;
+                    break;*/
+
                 default:
                     /*ERRO DE CATEGORIA*/
                     erroSintatico("Cmd invalido");
@@ -772,7 +788,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        atrib();
+        cmd();
 
 
         fclose(arquivo);
