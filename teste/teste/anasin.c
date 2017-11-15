@@ -68,7 +68,7 @@ int fator(){
     /*Se for ID*/
     else if(tk.categoria == ID){
 
-        if(tknext.categoria != SN && tknext.cod != PARENTESIS_ABRE){
+        if(!(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)){
             //Se for somente ID
             printf("\nsomente id");
             return 1;
@@ -504,7 +504,7 @@ void cmd(){
 
                 default:
                     /*ERRO DE CATEGORIA*/
-                    erroSintatico("Cmd invalido");
+                    erroSintatico("Sinal inválido! É esperado { ou ;");
 
             }//fim-switch
 
@@ -529,12 +529,14 @@ void cmd(){
                         }//if PARENTESIS_FECHA
                         else{
                             //Erro fecha parentesis esperado
+                            erroSintatico("Esperado )");
                         }
 
                     }//if PARENTESIS_ABRE
                 else {
 
                     /*ERRO DE NÂO ABERTURA DE PARENTÊSE*/
+                    erroSintatico("Esperado (");
                 }
                     break;
 
@@ -775,7 +777,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        fator();
+        termo();
 
 
         fclose(arquivo);
@@ -787,6 +789,7 @@ int main(){
     }
     //FIM-ABRE O ARQUIVO
 
+    printf("\n");
     system("pause");
     return 0;
 }
