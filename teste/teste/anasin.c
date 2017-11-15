@@ -489,13 +489,10 @@ void cmd(){
             switch(tk.cod){
 
                 case PT_VIRG:
-                    //analex();
                     break;
 
                 case CHAVES_ABRE:
-                    printf("\nEntrei chaves abre");
                     while(1){
-                        printf("\nEntrei while");
                         if((tknext.categoria == SN && tknext.cod==CHAVES_FECHA)){
                             analex();
                             break;
