@@ -68,7 +68,7 @@ int fator(){
     /*Se for ID*/
     else if(tk.categoria == ID){
 
-        if(tknext.categoria == SN && tknext.cod != PARENTESIS_ABRE){
+        if(tknext.categoria != SN && tknext.cod != PARENTESIS_ABRE){
             //Se for somente ID
             printf("\nsomente id");
             return 1;
@@ -775,7 +775,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        cmd();
+        fator();
 
 
         fclose(arquivo);
