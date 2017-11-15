@@ -1,6 +1,5 @@
 #include "anasin.h"
 
-
 void erroSintatico(char erro[]){
 
     printf("\nERRO SINTÁTICO na Linha %d: %s", linhas, erro);
@@ -511,7 +510,7 @@ void cmd(){
         }//if SN
 
         //Se for palavra reservada
-        if(tk.categoria == PR){
+        else if(tk.categoria == PR){
 
             switch(tk.cod){
 
@@ -761,14 +760,111 @@ void cmd(){
         }//if PR
 
         //SE FOR ID
-        if(tk.categoria == ID){
+        else if(tk.categoria == ID){
 
+            //olha o proximo token, se for atribuição
+            //temos uma atribuição
+            if(tknext.categoria == SN && tknext.cod == ATRIB){
+                printf("\nDetectou atrib");
+                atrib(); //não chama analex pq ele já vai tá no id
+                printf("\nSaiu do atrib");
+                analex();
+                printf("\nVai esperar PT_VIRG");
+                if(tk.categoria == SN && tk.cod == PT_VIRG){
+                    printf("\nEncontrou PT_VIRG");
+                    return;
+                }else{
+                    erroSintatico("Falta PT_VIRG ; após atribuição");
+                }
+
+            }//fim se for atrib
+
+
+            //temos um id([expr{,expr}]);
+            else if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE){
+                //Ta no id
+                printf("\nNão eh atrib, eh o outro");
+
+                analex(); //passa pro próximo token
+
+                //Se o próximo token for fecha parentesis
+                if(tknext.categoria == SN && tknext.cod ==  PARENTESIS_FECHA){
+                    analex();
+                    printf("\nTa no )");
+                    //O proximo token tem que ser ponto e virgula
+                    printf("\nVai esperar PT_VIRG");
+
+                    if(tknext.categoria == SN && tknext.cod == PT_VIRG){
+                        printf("\nEncontrou PT_VIRG");
+                        analex();
+                        return;
+                    }else{
+                        //Se não for, dá erro
+                        erroSintatico("Falta PT_VIRG");
+                    }
+                }
+
+                printf("\nÉ o com exp");
+
+                //Chama a função de expressÃ£o
+                analex();
+                expr();
+                printf("\nSaiu de 1 exp");
+
+                //Se o proximo token for uma virgula
+                if(tknext.categoria == SN && tknext.cod == VIRG){
+                    printf("\nDetectou virg");
+                    analex();
+                    while(1){
+                        analex();
+                        expr();
+                        printf("\nSaiu de uma exp no while");
+                        if(!(tknext.categoria == SN && tknext.cod == VIRG)){
+                            break;
+                        }
+                        analex();
+
+                    }//fim-while
+                }//fimSe o proximo token for uma virgula
+
+                analex();
+                //If para checar se houve fechar parentesis
+                if((tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
+                    //Agora vai ver se o proximo token é pt_virg
+                    if(tknext.categoria == SN && tknext.cod == PT_VIRG){
+                        printf("\nEncontrou PT_VIRG");
+                        analex();
+                        return;
+                    }//fim-se é pt_virg
+                    else{
+                        //não encontrou pt_virg
+                        erroSintatico("Falta PT_VIRG");
+                    }
+                }//If encontrou fecha parentesis
+                else{
+                    //Erro faltando parentesis
+                    erroSintatico("Falta fecha parentesis");
+                }
+
+                return;
+
+            }////temos um id([expr{,expr}]);
+            else{
+                erroSintatico("Esperado cmd");
+            }
 
         }//fim- if id
+        else{
+            erroSintatico("Cmd inválido");
+        }
 
 
     }//If PR ou ID ou SN
+    else{
+        erroSintatico("Cmd inválido");
+    }
 }//void
+/*Obs: se der erro em cmd, provavelmente seja por conta dos dois ultimos elses ;*/
 
 int main(){
 
@@ -802,13 +898,3 @@ int main(){
     system("pause");
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
