@@ -1236,6 +1236,8 @@ int main(){
 
     char nomeArquivo[1000];
 
+    int tipo;
+
     printf("\n\tDigite o nome do arquivo de teste: "); scanf("%s", nomeArquivo);
 
     //ABRE O ARQUIVO

@@ -100,7 +100,6 @@ char PAL_RESERV[QTD_PALAVRASRESERV][100] = {
     "inteiro",
     "letra",
     "para",
-    "principal",
     "prototipo",
     "real",
     "realcon",
