@@ -32,7 +32,7 @@ int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int 
             break;
 
         case CONSULTAR:
-            return(consultar(lexema, escopo));
+            return(consultar(lexema, tipo, escopo));
             break;
     }//fim-switch
 
@@ -50,13 +50,14 @@ void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi){
     tabela[topo].categoria = categoria;
     tabela[topo].zumbi = zumbi;
 
-    /*printf("\nCHEGUEEEEI CHEGANDO!");
+    /*
     printf("\nLexema: %s",tabela[topo].lexema);
     printf("\nI: %d",tabela[topo].i);
     printf("\nTipo: %d",tabela[topo].tipo);
     printf("\nEscopo: %d",tabela[topo].escopo);
     printf("\nCategoria: %d",tabela[topo].categoria);
-    printf("\nZumbi: %d",tabela[topo].zumbi);*/
+    printf("\nZumbi: %d",tabela[topo].zumbi);
+    */
 }
 
 void desempilhar(){
@@ -69,7 +70,7 @@ void desempilhar(){
     }
 }
 
-int consultar(char lexema[], int escopo){
+int consultar(char lexema[], int tipo, int escopo){
     int i = topo;
 
     if(topo == -1){
@@ -78,7 +79,7 @@ int consultar(char lexema[], int escopo){
     }
 
     for(i = topo; i!=-1; i--){
-        if( (strcmp(tabela[i].lexema, lexema)==0) && (tabela[i].escopo == escopo) ){
+        if( (strcmp(tabela[i].lexema, lexema)==0) && (tabela[i].tipo == tipo) && (tabela[i].escopo == escopo)){
             return VERDADEIRO;
         }else{
             return FALSO;
