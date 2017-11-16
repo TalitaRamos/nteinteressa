@@ -1235,11 +1235,9 @@ void progteste(){
 int main(){
     char nomeArquivo[1000];
 
+    printf("\n\tDigite o nome do arquivo fonte: "); scanf("%s", nomeArquivo);
 
-
-    printf("\n\tDigite o nome do arquivo de teste: "); scanf("%s", nomeArquivo);
-
-    //ABRE O ARQUIVO
+    /*ABRE O ARQUIVO*/
 	if ( (arquivo = fopen(nomeArquivo,"r")) != NULL ){
         printf("\n\tArquivo aberto com sucesso!\n");
 
@@ -1253,7 +1251,6 @@ int main(){
 
         cmd();
 
-
         fclose(arquivo);
     }
     else{
@@ -1261,7 +1258,7 @@ int main(){
         system("pause");
         exit(1);
     }
-    //FIM-ABRE O ARQUIVO
+    /*FIM-ABRE O ARQUIVO*/
 
     printf("\n");
     system("pause");
