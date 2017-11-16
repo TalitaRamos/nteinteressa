@@ -452,7 +452,7 @@ void tipos_p_opc(){
 }
 
 
-/*EM TESTES*/
+/*OK*/
 void atrib(){
 
     //Se  for ID
@@ -478,7 +478,7 @@ void atrib(){
 
 }
 
-/*EM TESTES (pt_virg e {cmd} ok)*/
+/*OK*/
 void cmd(){
     if(tk.categoria == PR || tk.categoria == ID || tk.categoria == SN){
 
