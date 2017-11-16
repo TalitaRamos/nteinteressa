@@ -1293,7 +1293,6 @@ void progteste(){
                 analex(); //pergou pt e virgula
                 printf("\nPeguei o ponto e virgula");
 
-
             }//Fim-se tknext for id
             else{
                 erroAnalisadorLexico("Após tipo é esperado ID");
@@ -1301,6 +1300,14 @@ void progteste(){
 
 
         }//fim-Enquanto tnext for tipo
+
+        //chamar CMD
+        printf("\nTalvez ocorra cmd");
+        while(!(tknext.categoria == SN && tknext.cod == CHAVES_FECHA)){
+            analex();
+            printf("\nvai ocorrer cmd");
+            cmd();
+        }
 
     }
 

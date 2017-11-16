@@ -1,1 +1,1 @@
-){inteiro a, b,,;
+){inteiro a; real a; booleano a,c,e,s;}
