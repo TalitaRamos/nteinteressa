@@ -8,7 +8,7 @@
 /*Estrutura da Tabela*/
 typedef struct linhaTabSimb{
     int i; //Número da linha da tabela
-    char lexema[TAM_LEXEMA];
+    char lexema[TAM_LEXEMA]; //nome
     int tipo; //INT, FLOAT, CHAR, ETC...
     int escopo; //Global ou Local
     int categoria; //Função, Parametro, Variavel
@@ -26,10 +26,11 @@ Linha_TabSimb tabela[TAM_TABSIMB];
 int topo;
 
 /*Assinatura das Funções*/
+void iniciarTabelaDeSimbolos();
 int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int categoria, int zumbi);
 void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi);
 void desempilhar();
-int (char lexema[], int tipo, int escopo);
+int consultar(char lexema[], int tipo, int escopo);
 void imprimirTabela();
 
 #endif

@@ -3,7 +3,7 @@
 
 
 /*Inicia o topo da pilha*/
-void iniciar_pilha(){
+void iniciarTabelaDeSimbolos(){
     topo = -1;
 }
 
@@ -11,10 +11,6 @@ void iniciar_pilha(){
 int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int categoria, int zumbi){
 
     switch (operation){
-        case IGNORE:
-            return 0;
-            break;
-
         case EMPILHAR:
             if(topo == TAM_TABSIMB){
                 //Se a pilha estiver cheia
@@ -61,12 +57,18 @@ void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi){
 }
 
 void desempilhar(){
+    /*
     while(1){
         if(tabela[topo].zumbi == NAO_ZUMBI && tabela[topo].escopo == LOCAL){
             topo--;
         }else{
             break;
         }
+    }
+    */
+
+    while(tabela[topo].zumbi == NAO_ZUMBI && tabela[topo].escopo == LOCAL){
+        topo--;
     }
 }
 

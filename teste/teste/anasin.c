@@ -1235,11 +1235,15 @@ void progteste(){
 int main(){
     char nomeArquivo[1000];
 
+
+
     printf("\n\tDigite o nome do arquivo de teste: "); scanf("%s", nomeArquivo);
 
     //ABRE O ARQUIVO
 	if ( (arquivo = fopen(nomeArquivo,"r")) != NULL ){
         printf("\n\tArquivo aberto com sucesso!\n");
+
+        iniciarTabelaDeSimbolos();
 
         analex();
         analex();
