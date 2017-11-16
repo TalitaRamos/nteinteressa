@@ -567,173 +567,92 @@ void cmd(){
 
                 case PARA:
                     analex();
-                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE)// if 1
-                    {
-                        analex();
-                        if(tknext.categoria == ID) //if 2
-                        {
-                            analex();
+                    //Se for parentesis
+                    if(tk.categoria == SN && tk.cod == PARENTESIS_ABRE){
+
+                        //Se o proximo token for ID, então ocorrerá a atribuição 1
+                        if(tknext.categoria == ID){
                             analex();
                             atrib();
-                            if(!(tknext.categoria == SN && tk.cod == PT_VIRG))//if 7
-                            {
-                                /*ERRO POR FALTA DE PONTO VIRGULA*/
+                        }//-Fim possivel atrib 1
 
-                            }else{
+                        //Verifica se o próximo token é PT_VIRG 1
+                        if(tknext.categoria == SN && tknext.cod == PT_VIRG){
+                            analex();//to no pt_virg 1
 
-                                /*SE LÊ VIRGULA*/
+                            //Verifica se próximo token é PT_VIRG 2
+                            //Se for, não ocorrerá expr
+                            //Se não for, pode ocorrer expr
+                            if(tknext.categoria == SN && tknext.cod == PT_VIRG){
+                                analex(); //to no pt_virg 2
+
+                                //Se o proximo token for ID, então ocorrerá a atribuição 2
+                                if(tknext.categoria == ID){
+                                    analex();
+                                    atrib();
+
+                                    if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA){
+                                        analex();//ta no parentesis
+                                        analex();//prepatativo pro cmd
+                                        cmd();
+                                    }else{
+                                        erroSintatico("É esperado FECHA PARENTESIS1");
+                                    }
+
+
+
+                                }//-Fim possivel atrib 2
+                                else if(!(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)){
+                                    //sob observação
+                                    erroSintatico("É esperado FECHA PARENTESIS3");
+                                }
+
+
+                            }//FIM-SE FOR PT_VIRG 2
+                            //Caso não for PTVIRG, pode ocorrer expr
+                            else{
                                 analex();
-                                if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 8
-                                {
-                                            analex();
-                                            if(tknext.categoria == ID) //if 5
-                                            {
-                                                analex();
-                                                analex();
-                                                atrib();
-                                            }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 9
-                                            {
-                                                analex();// Vai para o )
-                                                analex();//Vai para o cmd
-                                                cmd();
-                                            }else {
+                                expr();
 
-                                                /*ERRO POR FALTA DE FECHA PARENTESE*/
+                                //É esperado PT_VIRG 2 APOS EXPR
+                                if(tknext.categoria == SN && tknext.cod == PT_VIRG){
+                                    analex(); //to no pt_virg 2
 
-                                             }// else 9
-                               // }else {
+                                    //Se o proximo token for ID, então ocorrerá a atribuição 2
+                                    if(tknext.categoria == ID){
+                                        analex();
+                                        atrib();
 
-
-                               // } else{
-
-
-                                }else{// abre else do if 8
-
-                                           analex();
-                                           expr();
-                                           if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 11
-                                            {
-                                                    analex();
-                                                    if(tknext.categoria == ID)
-                                                    {
-                                                        analex();
-                                                        analex();
-                                                        atrib();
-                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
-                                                        {
-                                                            cmd();
-                                                        }else{
-
-                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
-
-                                                        }//fecha else do if 12
-                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 14
-                                                        {
-                                                            cmd();
-                                                        }else
-                                                        {
-
-                                                            /*ERRO*/
-
-                                                        }// else fecha do else if 14
-
-                                            }else
-                                            {
-                                                    /*ERRO POR FALAT DE VIRGULA*/
-
-                                            }//fecha else do if 11
-
-                                }// fecha else do if 8
-
-                            }//else do if 7
-
-                        }else if(tknext.categoria == SN && tk.cod == PT_VIRG){// else if do if 2
-                            analex();
-                            if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 3
-                            {
-                                                analex();
-                                                if(tknext.categoria == ID)
-                                                    {
-                                                        analex();
-                                                        analex();
-                                                        atrib();
-                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 16
-                                                        {
-                                                            analex();
-                                                            cmd();
-                                                        }else{
-
-                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
-
-                                                        }//fecha else do if 16
-                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 18
-                                                        {
-                                                            analex();
-                                                            cmd();
-                                                        }else
-                                                        {
-
-                                                            /*ERRO*/
-
-                                                        }// else fecha do else if 18
+                                        if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA){
+                                            analex();//ta no parentesis
+                                            analex();//prepatativo pro cmd
+                                            cmd();
+                                        }else{
+                                            erroSintatico("É esperado FECHA PARENTESIS2");
+                                        }
+                                    }else if(!(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)){
+                                        //sob observação
+                                        erroSintatico("É esperado FECHA PARENTESIS4");
+                                    }
 
 
+                                }//fIM-ESPERADO PT_VIRG2 APOS EXPR
+                                else{
+                                    erroSintatico("É esperado PT_VIRG");
+                                }
+
+                            }//fim-pode ocorrer expr
+
+                        }//FIM-SE FOR PT_VIRG 1
+                        else{
+                            erroSintatico("É esperado PT_VIRG");
+                        }
 
 
-                            }else{
-                                           analex();
-                                           expr();
-                                           if(tknext.categoria == SN && tk.cod == PT_VIRG)//if 11
-                                            {
-                                                    analex();
-                                                    if(tknext.categoria == ID)
-                                                    {
-                                                        analex();
-                                                        analex();
-                                                        atrib();
-                                                        if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
-                                                        {
-                                                            analex();
-                                                            cmd();
-                                                        }else{
-
-                                                             /*ERRO ESPERAVA-SE FECHA PARENTESE*/
-
-                                                        }//fecha else do if 12
-                                                    }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 14
-                                                        {
-                                                            analex();
-                                                            cmd();
-                                                        }else
-                                                        {
-
-                                                            /*ERRO*/
-
-                                                        }// else fecha do else if 14
-
-                                            }else
-                                            {
-                                                    /*ERRO POR FALAT DE VIRGULA*/
-
-                                            }//fecha else do if 11
-
-
-
-
-
-                            }//fecha else do if 3
-
-                        }else
-                        {
-                            /*ERRO DE TIPO DESCONHECDO*/
-
-                        }// else if 2
-                    }else{
-
-                    /* ERRO ESPERAVA-SE ABRE PARENTESE*/
-
-                    }//else if 1
-
+                    }//Fim- se for parentesis
+                    else{
+                        erroSintatico("É esperado PARENTESIS_ABRE");
+                    }
 
                     break;
 
@@ -1329,7 +1248,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        progteste();
+        cmd();
 
 
         fclose(arquivo);
