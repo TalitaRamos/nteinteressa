@@ -34,5 +34,8 @@ void expr_simp();
 int opr_rel();
 int tipo();
 void tipos_param();
+void tipos_p_opc();
+void atrib();
+void cmd();
 void analex();
 #endif
