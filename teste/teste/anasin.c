@@ -573,6 +573,7 @@ void cmd(){
                         if(tknext.categoria == ID) //if 2
                         {
                             analex();
+                            analex();
                             atrib();
                             if(!(tknext.categoria == SN && tk.cod == PT_VIRG))//if 7
                             {
@@ -587,6 +588,7 @@ void cmd(){
                                             analex();
                                             if(tknext.categoria == ID) //if 5
                                             {
+                                                analex();
                                                 analex();
                                                 atrib();
                                             }else if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 9
@@ -614,6 +616,7 @@ void cmd(){
                                                     analex();
                                                     if(tknext.categoria == ID)
                                                     {
+                                                        analex();
                                                         analex();
                                                         atrib();
                                                         if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
@@ -652,6 +655,7 @@ void cmd(){
                                                 if(tknext.categoria == ID)
                                                     {
                                                         analex();
+                                                        analex();
                                                         atrib();
                                                         if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 16
                                                         {
@@ -684,6 +688,7 @@ void cmd(){
                                                     analex();
                                                     if(tknext.categoria == ID)
                                                     {
+                                                        analex();
                                                         analex();
                                                         atrib();
                                                         if(tknext.categoria == SN && tk.cod == PARENTESIS_FECHA)// if 12
@@ -866,6 +871,441 @@ void cmd(){
 }//void
 /*Obs: se der erro em cmd, provavelmente seja por conta dos dois ultimos elses ;*/
 
+void prog()
+{
+    //analex();
+    if(tk.categoria == PR && tk.cod == PROTOTIPO)// if 1
+    {
+        printf("PROTOTIPO \n");
+        if(tknext.categoria == PR && tknext.cod == SEMRETORNO)// if 2
+        {
+            printf("SEMRETORNO \n");
+            analex();
+            if(tknext.categoria == ID)// if 3
+            {
+                printf("ID \n");
+                analex();
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 10
+                {
+                    controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+
+                    if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 4
+                    {
+                        printf("PARENTESI ABRE \n");
+                        analex();// vai para o parentesi
+                        analex();// vai para o tipos_p_opc
+                        printf("TIPOS_O_OPC \n");
+                        tipos_p_opc();
+                        if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)// if 5
+                        {
+                            printf("PARENTESI FECHA\n");
+                            analex();
+                                while(tknext.categoria == SN && tknext.cod == VIRG)// while VIRG
+                                {
+                                        printf("VIRG \n");
+                                        analex();// vai para VIRG
+                                        if(tknext.categoria == ID)// if 40
+                                        {
+                                            printf("ID");
+                                                    analex();
+                                                    if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0))// if 11
+                                                    {
+                                                        controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                                                         /*if(tknext.categoria == ID)// if 6
+                                                        {
+
+                                                            analex();*/
+                                                            if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 7
+                                                            {
+                                                                printf("PARENTESIS_ABRE\n");
+                                                                analex();// vai para o abre parentese
+                                                                analex();// vai para o tipos_p_opc
+                                                                printf("tipos_p_opc\n");
+                                                                tipos_p_opc();
+                                                                if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)// if 8
+                                                                {
+                                                                    printf("PARENTESIS_FECHA\n");
+                                                                    analex();
+                                                                }else{
+                                                                    erroSintatico("Esperava-se um fecha parentesi");
+                                                                }// fecha else do if 8
+                                                            }else{
+                                                                    erroSintatico("Esperava-se um abre parentesi");
+                                                                }//fecha else do if 7
+
+                                                    /*}// fecha if 6*/
+                                                }else{
+                                                    erroSintatico("Dupla declaracao");
+                                                }// fim do else do if 11
+
+                                        }// fim do if 40
+
+                            }// while VIRG
+
+                            //analex();
+                            if(tknext.categoria == SN && tknext.cod == PT_VIRG)// if 9
+                            {
+                                printf("PT_VIRG");
+                                analex();
+                            }
+                            else{
+                                erroSintatico("Esperava-se um ponto virgula");
+                            }// fecha else do if 9
+
+                        }else
+                        {
+                            erroSintatico("Esperava-se um fecha parentesi");
+                        }// fecha else if 5
+                    }else
+                    {
+                        erroSintatico("Esperava-se um abre parentesi");
+                    }// fecha do if 4
+
+                } else // do if 10
+                {
+                    erroSintatico("Dupla declaracao");
+                }// fecha else do if 10
+
+            }// fecha do if 3
+
+        } else // else do if 2
+        {
+            analex();
+            printf("Tipo\n");
+            tipo();
+            if(tknext.categoria == ID)// if 3
+            {
+                analex();
+                 printf("ID\n");
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 10
+                {
+                    controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+
+                    if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 4
+                    {
+                         printf("PARENTESIS_ABRE\n");
+                        analex();// vai para o abre parentesi
+                        analex();// vai para o tipos_p_opc
+                        printf("TIPOS_P_OPC\n");
+                        tipos_p_opc();
+                        if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)// if 5
+                        {
+                            analex();
+                            printf("PARENTESIS_FECHA\n");
+                            while(tknext.categoria == SN && tknext.cod == VIRG)
+                            {
+                                printf("VIRG \n");
+                                analex();
+                                if(tknext.categoria == ID)// if 45.
+                                {
+                                    printf("ID\n");
+                                    analex();
+                                    if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 11
+                                        {
+                                            controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+                                            /* if(tknext.categoria == ID)// if 6
+                                            {
+
+                                                analex();*/
+                                                if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 7
+                                                {
+                                                    printf("PARENTESIS_ABRE \n");
+                                                    analex();// vai para o abre parentese
+                                                    analex();// vai para o tipos_p_opc
+                                                    tipos_p_opc();
+                                                    if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)// if 8
+                                                    {
+                                                        printf("PARENTESIS_FECHA \n");
+                                                        analex();
+                                                    }else{
+                                                        erroSintatico("Esperava-se um fecha parentesi");
+                                                    }// fecha else do if 8
+                                                }else{
+                                                        erroSintatico("Esperava-se um abre parentesi");
+                                                    }//fecha else do if 7
+
+                                       /* }// fecha if 6*/
+                                    }else{
+                                        erroSintatico("Dupla declaracao");
+                                    }// fim do else do if 11
+
+                                }// fecha if 45.
+
+
+                        }// while parentese
+
+                            //analex();
+                            if(tknext.categoria == SN && tknext.cod == PT_VIRG)// if 9
+                            {
+                                analex();
+                            }
+                            else{
+                                erroSintatico("Esperava-se um ponto virgula");
+                            }// fecha else do if 9
+                        }else
+                        {
+                            erroSintatico("Esperava-se um fecha parentesi");
+                        }// fecha else if 5
+                    }else
+                    {
+                        erroSintatico("Esperava-se um abre parentesi");
+                    }// fecha do if 4
+
+                } else // do if 10
+                {
+                    erroSintatico("Dupla declaracao");
+                }// fecha else do if 10
+
+            }// fecha do if 3
+        }// fecha else do if 2
+
+    }else if(tk.categoria == PR && tk.cod == SEMRETORNO)// else do if 1
+    {
+        printf("SEM RETORNO \n");
+        if(tknext.categoria == ID )// if 20
+        {
+            printf("ID \n");
+            analex();
+            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 21
+              {
+                   controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+                   if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 23
+                    {
+                        printf("ABRE PARENTESI \n");
+                        analex();// vai para o parentesi
+                        printf("TIPOS_PARM \n");
+                        analex();//vai para o tipos_param
+                        tipos_param();
+                      if(tknext.categoria == SN && tknext.cod == PARENTESIS_FECHA)// if 24
+                       {
+
+
+                            printf("PAARENTESI FECHA \n");
+                            analex();
+                            if(tknext.categoria == SN && tknext.cod == CHAVES_ABRE)// if 25
+                           {
+                               printf("CHAVES ABRI \n");
+                               analex();
+                               if(tknext.categoria == SN && tknext.cod == CHAVES_FECHA)// if 26
+                                {
+                                    printf("CHAVES FECHA \n");
+                                    analex();
+
+                                }else//do if 26
+                                {
+                                    printf("Entrei no else\n");
+                                    while(1)// while 4
+                                    {
+                                        printf("VIRGULA \n");
+                                        analex();
+                                        printf("TIPO \n");
+                                        tipo();
+                                        if(tknext.categoria == ID )// if 27
+                                        {
+                                            printf("ID \n");
+                                            analex();
+                                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 28
+                                            {
+                                                controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+                                                while(tknext.categoria == SN && tknext.cod == VIRG)// while 29
+                                                {
+                                                    printf("VIRG \n");
+                                                    analex();
+                                                    if(tknext.categoria == ID)// if 30
+                                                    {
+                                                        printf("ID \n");
+                                                        analex();
+                                                        if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 31
+                                                        {
+                                                            controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+
+                                                        }else{// if 31
+
+                                                                erroSintatico("Dupla declaraçao");
+
+                                                        }// else do if 31
+
+                                                    }// fecha if 30
+
+                                                }// while 29
+
+                                                if(tknext.categoria == SN && tknext.cod == PT_VIRG)//if 33
+                                                {
+                                                    printf("PONTO VIRGULA \n");
+                                                    analex();
+
+                                                    if(tknext.categoria == PR)
+                                                    {
+
+                                                    }else{
+                                                        break;
+                                                    }
+                                                     /*while(!(tknext.categoria == SN && tknext.cod == CHAVES_FECHA))// while 34
+                                                    {
+                                                        printf("CMD \n");
+                                                        analex();
+                                                        cmd();
+                                                    }//while 34*/
+
+                                                    /*if(tknext.categoria == SN && tknext.cod == CHAVES_FECHA)// if 60
+                                                    {
+                                                        analex();
+
+                                                    }else // if 60
+                                                    {
+                                                        erroSintatico("Esperava-se um fecha chaves");
+                                                    }// fecha else do if 60*/
+
+                                                }// fecha if 33
+
+
+                                            }// fecha if 28
+
+                                        }// fecha if 27
+
+                                    }//while 4
+
+                                     if(tknext.categoria == SN && tknext.cod == CHAVES_FECHA)// if 60
+                                    {
+                                          analex();
+
+                                    }else // if 60
+                                    {
+                                        erroSintatico("Esperava-se um fecha chaves");
+                                    }// fecha else do if 60
+
+                                }// fecha else do 26
+
+                           }//if 25
+
+
+
+
+
+                    }else// else do if 24
+                        {
+                            erroSintatico("Esperava-se um fecha parentesi");
+                        }// fecha else do if 24
+					}else// else do if 23
+                        {
+                            erroSintatico("Esperava-se um abre parentesi");
+                        }//fim do else do if 23
+              }//fim do if 21
+        }//fecha if 20
+
+    }else// else do if 21
+    {
+        printf("TIPO \n");
+        tipo();
+        if(tknext.categoria == ID )// if 72
+        {
+             printf("ID \n");
+             analex();
+            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 71
+             {
+                controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+                if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)// if 73
+                {
+
+                }else
+                {
+                   // printf("Vim no while");
+                    while(tknext.categoria == SN && tknext.cod == VIRG)// while 6
+                    {
+                        printf("VIRG \n");
+                        analex();
+                        if(tknext.categoria == ID)
+                        {
+                            printf("ID \n");
+                            analex();
+                             if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, GLOBAL, 0, 0))// if 71
+                             {
+                                controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, GLOBAL, PARAM, SIM_ZUMBI);
+                            }else// if 71
+                            {
+                                erroSintatico("Dupla decraração");
+                            }// if 71
+                        }
+
+                    }// while 6
+
+
+                     if(tknext.categoria == SN && tknext.cod == PT_VIRG)// if 74
+                       {
+                           printf("PT_VIRG \n");
+                              analex();
+
+                       }else // if 74
+                       {
+                            erroSintatico("Esperava-se umponto virgula");
+                       }// fecha else do if 74
+
+
+
+                }// if 73
+
+             }else// if 71
+            {
+                erroSintatico("Dupla decraração");
+            }// if 71
+        }// if 72
+    }// fecha else do if 1
+}// void prog
+
+void progteste(){
+
+    //Espera pelo abre chaves
+    if(tknext.categoria == SN && tknext.cod == CHAVES_ABRE){
+        analex(); //ta no abre chaves
+
+        //Se depois vier um fecha chaves, retorna
+        if(tknext.categoria == SN && tknext.cod == CHAVES_FECHA){
+            analex();
+             printf("\n{}");
+            return;
+        }
+        //Enquanto tnext for tipo
+        while(tknext.categoria == PR && (tknext.cod == CARACTER || tknext.cod == INTEIRO || tknext.cod == REAL ||tknext.cod == BOOLEANO)){
+            printf("\nEntrei no while");
+            analex();//ta no tipo
+            printf("\nTo no tipo");
+            //Se o próximo token for ID
+            if(tknext.categoria == ID){
+                analex();//tá no id
+                printf("\nTo no id");
+
+                //Enquanto TNEXT for vírgula
+                while(tknext.categoria == SN && tknext.cod == VIRG){
+                    printf("\nEntrei no while2");
+                    analex();//Pra pegar a virgula
+                    if(tknext.categoria != ID){
+                        erroSintatico("Eh esperado ID após virgula");
+                    }
+                    analex();//pra pegar o ID
+                    if(!(tknext.categoria == SN && tknext.cod == VIRG) && !(tknext.categoria == SN && tknext.cod == PT_VIRG)){
+                        erroSintatico("Eh esperado virgula ou PT_VIRG apos id");
+                    }
+                }
+
+                if(!(tknext.categoria == SN && tknext.cod == PT_VIRG)){
+                    erroAnalisadorLexico("É esperado PT_VIRG");
+                }
+                analex(); //pergou pt e virgula
+                printf("\nPeguei o ponto e virgula");
+
+
+            }//Fim-se tknext for id
+            else{
+                erroAnalisadorLexico("Após tipo é esperado ID");
+            }
+
+
+        }//fim-Enquanto tnext for tipo
+
+    }
+
+}
+
 int main(){
 
     char nomeArquivo[1000];
@@ -882,7 +1322,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        cmd();
+        progteste();
 
 
         fclose(arquivo);

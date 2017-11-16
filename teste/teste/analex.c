@@ -509,7 +509,7 @@ void analex(){
 
 void imprimirTK(token aux){
 
-     printf("\t\n<");
+     printf("<");
 
         if(aux.categoria == PR){
             printf("PR, %s> ", PAL_RESERV[aux.cod]);

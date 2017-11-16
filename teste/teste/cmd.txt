@@ -1,1 +1,1 @@
-testar(x,y);
+para(x=0;x<y;){;}
