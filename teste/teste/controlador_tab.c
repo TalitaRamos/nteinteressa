@@ -45,28 +45,9 @@ void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi){
     tabela[topo].escopo = escopo;
     tabela[topo].categoria = categoria;
     tabela[topo].zumbi = zumbi;
-
-    /*
-    printf("\nLexema: %s",tabela[topo].lexema);
-    printf("\nI: %d",tabela[topo].i);
-    printf("\nTipo: %d",tabela[topo].tipo);
-    printf("\nEscopo: %d",tabela[topo].escopo);
-    printf("\nCategoria: %d",tabela[topo].categoria);
-    printf("\nZumbi: %d",tabela[topo].zumbi);
-    */
 }
 
 void desempilhar(){
-    /*
-    while(1){
-        if(tabela[topo].zumbi == NAO_ZUMBI && tabela[topo].escopo == LOCAL){
-            topo--;
-        }else{
-            break;
-        }
-    }
-    */
-
     while(tabela[topo].zumbi == NAO_ZUMBI && tabela[topo].escopo == LOCAL){
         topo--;
     }
@@ -74,25 +55,21 @@ void desempilhar(){
 
 int consultar(char *lexema, int escopo){
     int i = topo;
-	printf("\nEntrei na consulta!");
 
     if(topo == -1){
-        //printf("\nPilha vazia!");
-		//Se a pilha estiver vazia, logo não estará lá.
         return FALSO;
     }
 
     for(i = topo; i!=-1; i--){
-		
+
 		if(strcmp(tabela[i].lexema, lexema)==0){
 			if(tabela[i].escopo == escopo){
-				printf("\nCOnsulta: Verdadeiro!");
 				return VERDADEIRO;
 			}else{
 				return FALSO;
 			}
 		}
-		
+
     }
 
     return FALSO;
@@ -102,7 +79,6 @@ void imprimirTabela(){
     int i = topo;
 
     if(topo == -1){
-        printf("\nPilha vazia!");
         return;
     }
 
@@ -117,27 +93,3 @@ void imprimirTabela(){
         printf("\n----------- FIM-LINHA %d -----------", tabela[i].i);
     }
 }
-
-/*
-void main(){
-    char lexema[TAM_LEXEMA] = {"Teste"};
-    int tipo = 1;
-    int escopo = LOCAL;
-    int categoria = FUNC;
-    int zumbi = NAO_ZUMBI;
-
-    iniciar_pilha();
-    controlador_TabSimb(EMPILHAR, lexema, tipo, escopo, categoria, zumbi);
-    imprimirTabela();
-
-    if(consultar("Teste", LOCAL)){
-        printf("\nEncontrei!!");
-    }else{
-     printf("\nNÃO Encontrei!!");
-    }
-
-    //desempilhar();
-    //imprimirTabela();
-
-}
-*/
