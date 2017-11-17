@@ -393,7 +393,7 @@ void tipos_p_opc(){
                 //Se não já existir na tabela
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
-
+                    imprimirTabela();
 
                 }
                 else{
@@ -419,6 +419,7 @@ void tipos_p_opc(){
                             //Se não já existir na tabela
                             if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                                 controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
+                                imprimirTabela();
 
                             }//fimSe não já existir na tabela
                             else{
@@ -1256,8 +1257,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        tipos_param();
-        //cmd();
+        tipos_p_opc();
 
         fclose(arquivo);
     }
