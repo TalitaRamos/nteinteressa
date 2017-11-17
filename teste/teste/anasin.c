@@ -262,7 +262,7 @@ int tipo(){
             return tk.cod;
         }else if(tk.cod == REAL){
             return tk.cod;
-        }else if(tk.cod = BOOLEANO){
+        }else if(tk.cod == BOOLEANO){
             return tk.cod;
         }else{
             return -1;
@@ -299,7 +299,7 @@ void tipos_param(){
     else{
         //SE FOR TIPO
         guardarTipo = tipo();
-        if(guardarTipo>0){
+        if(guardarTipo>=0){
         printf("\n Tipos_param - É tipo!");
         analex();
 
@@ -317,7 +317,7 @@ void tipos_param(){
                             analex();
                             //Se for tipo
                             guardarTipo = tipo();
-                            if(guardarTipo>0){
+                            if(guardarTipo>=0){
                                 analex();
                                 //Se for ID
                                 if(tk.categoria == ID){
@@ -382,7 +382,7 @@ void tipos_p_opc(){
     else{
         //SE FOR TIPO
         guardarTipo = tipo();
-        if(guardarTipo>0){
+        if(guardarTipo>=0){
 
             printf("\n Tipos_param_opc - É tipo!");
 
@@ -391,7 +391,7 @@ void tipos_p_opc(){
                 //Pega esse token
                 analex();
                 //Se não já existir na tabela
-                if(!controlador_TabSimb(CONSULTAR, tk.lexema, guardarTipo, LOCAL, 0, 0)){
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
 
 
@@ -410,14 +410,14 @@ void tipos_p_opc(){
                     analex();
                     //Se for tipo
                     guardarTipo = tipo();
-                    if(guardarTipo>0){
+                    if(guardarTipo>=0){
 
                         //Se o próximo token for ID
                         if(tknext.categoria == ID){
                             //Pega esse token
                             analex();
                             //Se não já existir na tabela
-                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, guardarTipo, LOCAL, 0, 0)){
+                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                                 controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
 
                             }//fimSe não já existir na tabela

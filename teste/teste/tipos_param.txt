@@ -1,1 +1,1 @@
-inteiro a, real a
+booleano a, inteiro a
