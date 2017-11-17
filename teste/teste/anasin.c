@@ -1254,10 +1254,8 @@ void progteste(){
             cmd();
         }
 
-        //Apos encontrar o fecha chaves, desempilha
-        imprimirTabela();
+        //Apos encontrar o fecha chaves, desempilha a tabela de sinais
         desempilhar();
-        imprimirTabela();
 
     }
 
