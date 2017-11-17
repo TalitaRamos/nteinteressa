@@ -1,1 +1,1 @@
-inteiro b, booleano, caracter, inteiro b,
+inteiro a, inteiro, caracter c, booleano f, real d

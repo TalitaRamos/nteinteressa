@@ -383,71 +383,44 @@ void tipos_p_opc(){
         //SE FOR TIPO
         guardarTipo = tipo();
         if(guardarTipo>=0){
-
             printf("\n Tipos_param_opc - É tipo!");
 
             //Se o próximo token for ID
             if(tknext.categoria == ID){
-                //Pega esse token
-                analex();
-                //Se não já existir na tabela
+                analex();//to no id
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
                     controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
-                    imprimirTabela();
-
                 }
                 else{
-                    //Erro id ja¡ existente na tabela
-                    erroSintatico("ID já existente na tabela");
+                    erroSintatico("ID já existente");
                 }
-            }//fim-Se o próximo token for ID
+            }//fim-se for id
 
-            //Se o próximo token for vírgula, tem que entrar no while
-            else if(tknext.categoria == SN && tknext.cod == VIRG){
-                //Ta na virgula
-                analex();
-                while(1){
-                    analex();
-                    //Se for tipo
-                    guardarTipo = tipo();
-                    if(guardarTipo>=0){
+            //Se o próximo token for virgula
+            while(tknext.categoria == SN && tknext.cod == VIRG){
+                analex();//ta na virgula
+                analex();//ta no tipo
+                guardarTipo = tipo();
+                if(guardarTipo>=0){
 
-                        //Se o próximo token for ID
-                        if(tknext.categoria == ID){
-                            //Pega esse token
-                            analex();
-                            //Se não já existir na tabela
-                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
-                                imprimirTabela();
+                    //Se o próximo token for ID
+                    if(tknext.categoria == ID){
+                        analex();//to no id
+                        if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                            controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
+                        }
+                        else{
+                            erroSintatico("ID já existente");
+                        }
+                    }//fim-se for id
 
-                            }//fimSe não já existir na tabela
-                            else{
-                                //Erro id ja¡ existente na tabela
-                                erroSintatico("ID já existente na tabela");
-                            }
-                        }//fim-Se o próximo token for ID
+                }//fim-se for tipo2
+                else{
+                    erroSintatico("Tipo invalido!");
+                }
+            }//fim-while
 
 
-                    }//Fim-Se for tipo
-                    else{
-                        erroSintatico("Tipo inválido");
-                    }
-
-                    if(!(tknext.categoria == SN && tknext.cod == VIRG)){
-                        break;
-                    }
-                    analex();
-
-                }//fim-while
-
-
-            }//Fim-Se o próximo token for vírgula
-
-            //Se o próximo token não for virgula nem tipo
-            else if(tipo()<0 && !(tknext.categoria == SN && tknext.cod == VIRG)){
-                erroSintatico("É esperado ID ou TIPO");
-            }
 
         }//fim-tipo
         else{
@@ -458,7 +431,6 @@ void tipos_p_opc(){
     }//FIM-ELSE PR
 
 }
-
 
 /*OK*/
 void atrib(){
@@ -1261,6 +1233,7 @@ void progteste(){
 
 }
 
+
 int main(){
     char nomeArquivo[1000];
 
@@ -1278,7 +1251,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        progteste();
+        tipos_p_opc();
 
         fclose(arquivo);
     }
@@ -1293,3 +1266,4 @@ int main(){
     system("pause");
     return 0;
 }
+
