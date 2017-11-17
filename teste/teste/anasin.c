@@ -30,7 +30,6 @@ int opr_rel()
 void termo(){
 
     fator();
-    printf("\nTo em termo sai de fator");
 
     //Se o proximo token for um sinal
     if(tknext.categoria == SN){
@@ -60,7 +59,6 @@ void termo(){
 int fator(){
     /*Se for Inteiro, Real ou Caractere*/
     if(tk.categoria == CT_I || tk.categoria == CT_R || tk.categoria == CT_C  || tk.categoria == CT_LT){
-        printf("\ninttcon realcon caraccon cadeiacon");
         return 1;
     }
 
@@ -69,7 +67,6 @@ int fator(){
 
         if(!(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE)){
             //Se for somente ID
-            printf("\nsomente id");
             return 1;
         }
 
@@ -83,7 +80,6 @@ int fator(){
             if(tknext.categoria == SN && tknext.cod ==  PARENTESIS_FECHA){
 
                 //Ve o proximo token e sai
-                printf("\nsomente e parentesis");
                 analex();
                 return 1;
             }
@@ -130,7 +126,6 @@ int fator(){
     /* Se for somente ( expr ) */
     //Checar se houve abre parentesis
     else if(tk.categoria == SN && tk.cod ==  PARENTESIS_ABRE){
-        printf("\nEntrei no (expr)");
         analex();
         expr();
 
@@ -268,20 +263,6 @@ int tipo(){
             return -1;
         }
 
-        /*
-        if(strcmp("caracter", PAL_RESERV[tk.cod])==0){
-            return tk.cod;
-        }else if(strcmp("inteiro", PAL_RESERV[tk.cod])==0){
-            return tk.cod;
-        }else if(strcmp("real", PAL_RESERV[tk.cod])==0){
-            return tk.cod;
-        }else if(strcmp("booleano", PAL_RESERV[tk.cod])==0){
-            return tk.cod;
-        }else{
-            return -1;
-        }
-        */
-
     }//FIM-se for PR
     return -1;
 }
@@ -300,7 +281,6 @@ void tipos_param(){
         //SE FOR TIPO
         guardarTipo = tipo();
         if(guardarTipo>=0){
-        printf("\n Tipos_param - É tipo!");
         analex();
 
             //se for id
@@ -383,7 +363,6 @@ void tipos_p_opc(){
         //SE FOR TIPO
         guardarTipo = tipo();
         if(guardarTipo>=0){
-            printf("\n Tipos_param_opc - É tipo!");
 
             //Se o próximo token for ID
             if(tknext.categoria == ID){
@@ -669,13 +648,9 @@ void cmd(){
             //olha o proximo token, se for atribuição
             //temos uma atribuição
             if(tknext.categoria == SN && tknext.cod == ATRIB){
-                printf("\nDetectou atrib");
                 atrib(); //não chama analex pq ele já vai tá no id
-                printf("\nSaiu do atrib");
                 analex();
-                printf("\nVai esperar PT_VIRG");
                 if(tk.categoria == SN && tk.cod == PT_VIRG){
-                    printf("\nEncontrou PT_VIRG");
                     return;
                 }else{
                     erroSintatico("Falta PT_VIRG ; após atribuição");
@@ -687,19 +662,15 @@ void cmd(){
             //temos um id([expr{,expr}]);
             else if(tknext.categoria == SN && tknext.cod == PARENTESIS_ABRE){
                 //Ta no id
-                printf("\nNão eh atrib, eh o outro");
 
                 analex(); //passa pro próximo token
 
                 //Se o próximo token for fecha parentesis
                 if(tknext.categoria == SN && tknext.cod ==  PARENTESIS_FECHA){
                     analex();
-                    printf("\nTa no )");
                     //O proximo token tem que ser ponto e virgula
-                    printf("\nVai esperar PT_VIRG");
 
                     if(tknext.categoria == SN && tknext.cod == PT_VIRG){
-                        printf("\nEncontrou PT_VIRG");
                         analex();
                         return;
                     }else{
@@ -708,21 +679,17 @@ void cmd(){
                     }
                 }
 
-                printf("\nÉ o com exp");
 
                 //Chama a função de expressÃ£o
                 analex();
                 expr();
-                printf("\nSaiu de 1 exp");
 
                 //Se o proximo token for uma virgula
                 if(tknext.categoria == SN && tknext.cod == VIRG){
-                    printf("\nDetectou virg");
                     analex();
                     while(1){
                         analex();
                         expr();
-                        printf("\nSaiu de uma exp no while");
                         if(!(tknext.categoria == SN && tknext.cod == VIRG)){
                             break;
                         }
@@ -736,7 +703,6 @@ void cmd(){
                 if((tk.categoria == SN && tk.cod == PARENTESIS_FECHA)){
                     //Agora vai ver se o proximo token é pt_virg
                     if(tknext.categoria == SN && tknext.cod == PT_VIRG){
-                        printf("\nEncontrou PT_VIRG");
                         analex();
                         return;
                     }//fim-se é pt_virg
