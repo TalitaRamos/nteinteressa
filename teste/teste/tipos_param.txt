@@ -1,1 +1,1 @@
-inteiro a, inteiro b, inteiro c, inteiro d
+inteiro a, real a

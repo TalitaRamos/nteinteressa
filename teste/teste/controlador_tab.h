@@ -30,7 +30,7 @@ void iniciarTabelaDeSimbolos();
 int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int categoria, int zumbi);
 void empilhar(char lexema[], int tipo, int escopo, int categoria, int zumbi);
 void desempilhar();
-int consultar(char lexema[], int tipo, int escopo);
+int consultar(char lexema[], int escopo);
 void imprimirTabela();
 
 #endif

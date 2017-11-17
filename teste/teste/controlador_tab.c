@@ -28,7 +28,7 @@ int controlador_TabSimb(int operation, char lexema[], int tipo, int escopo, int 
             break;
 
         case CONSULTAR:
-            return(consultar(lexema, tipo, escopo));
+            return(consultar(lexema, escopo));
             break;
     }//fim-switch
 
@@ -72,16 +72,17 @@ void desempilhar(){
     }
 }
 
-int consultar(char lexema[], int tipo, int escopo){
+int consultar(char lexema[], int escopo){
     int i = topo;
 
     if(topo == -1){
-        printf("\nPilha vazia!");
+        //printf("\nPilha vazia!");
+		//Se a pilha estiver vazia, logo não estará lá.
         return FALSO;
     }
 
     for(i = topo; i!=-1; i--){
-        if( (strcmp(tabela[i].lexema, lexema)==0) && (tabela[i].tipo == tipo) && (tabela[i].escopo == escopo)){
+        if( (strcmp(tabela[i].lexema, lexema)==0) && (tabela[i].escopo == escopo)){
             return VERDADEIRO;
         }else{
             return FALSO;

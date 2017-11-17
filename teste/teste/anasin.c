@@ -289,6 +289,8 @@ int tipo(){
 /*OK*/
 void tipos_param(){
 
+    int guardarTipo;
+
     //Se for palavra reservada
     if(tk.categoria == PR && tk.cod == SEMPARAM){
         //Se a palavra reservada for semparam
@@ -296,7 +298,8 @@ void tipos_param(){
     }
     else{
         //SE FOR TIPO
-        if(tipo()>0){
+        guardarTipo = tipo();
+        if(guardarTipo>0){
         printf("\n Tipos_param - É tipo!");
         analex();
 
@@ -305,7 +308,7 @@ void tipos_param(){
 
                 //Se nÃ£o houver o ID na tabela, ele insere
                 if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                    controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                    controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
 
                     //E Se esse proximo token for VIRG
                     if(tknext.categoria == SN && tknext.cod == VIRG){
@@ -313,12 +316,13 @@ void tipos_param(){
                         while(1){
                             analex();
                             //Se for tipo
-                            if(tipo()>0){
+                            guardarTipo = tipo();
+                            if(guardarTipo>0){
                                 analex();
                                 //Se for ID
                                 if(tk.categoria == ID){
                                     if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                        controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                                        controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
                                     }else{
                                         erroSintatico("ID já existente");
                                     }
@@ -368,6 +372,7 @@ void tipos_param(){
 
 /*OK*/
 void tipos_p_opc(){
+    int guardarTipo;
 
     //Se for palavra reservada
     if(tk.categoria == PR && tk.cod == SEMPARAM){
@@ -376,7 +381,8 @@ void tipos_p_opc(){
     }
     else{
         //SE FOR TIPO
-        if(tipo()>0){
+        guardarTipo = tipo();
+        if(guardarTipo>0){
 
             printf("\n Tipos_param_opc - É tipo!");
 
@@ -385,8 +391,8 @@ void tipos_p_opc(){
                 //Pega esse token
                 analex();
                 //Se não já existir na tabela
-                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                    controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, guardarTipo, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
 
 
                 }
@@ -403,15 +409,16 @@ void tipos_p_opc(){
                 while(1){
                     analex();
                     //Se for tipo
-                    if(tipo()>0){
+                    guardarTipo = tipo();
+                    if(guardarTipo>0){
 
                         //Se o próximo token for ID
                         if(tknext.categoria == ID){
                             //Pega esse token
                             analex();
                             //Se não já existir na tabela
-                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
-                                controlador_TabSimb(EMPILHAR, tk.lexema, tk.cod, LOCAL, PARAM, SIM_ZUMBI);
+                            if(!controlador_TabSimb(CONSULTAR, tk.lexema, guardarTipo, LOCAL, 0, 0)){
+                                controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, PARAM, SIM_ZUMBI);
 
                             }//fimSe não já existir na tabela
                             else{
@@ -1249,7 +1256,8 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        cmd();
+        tipos_param();
+        //cmd();
 
         fclose(arquivo);
     }
