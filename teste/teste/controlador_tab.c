@@ -72,8 +72,9 @@ void desempilhar(){
     }
 }
 
-int consultar(char lexema[], int escopo){
+int consultar(char *lexema, int escopo){
     int i = topo;
+	printf("\nEntrei na consulta!");
 
     if(topo == -1){
         //printf("\nPilha vazia!");
@@ -82,11 +83,16 @@ int consultar(char lexema[], int escopo){
     }
 
     for(i = topo; i!=-1; i--){
-        if( (strcmp(tabela[i].lexema, lexema)==0) && (tabela[i].escopo == escopo)){
-            return VERDADEIRO;
-        }else{
-            return FALSO;
-        }
+		
+		if(strcmp(tabela[i].lexema, lexema)==0){
+			if(tabela[i].escopo == escopo){
+				printf("\nCOnsulta: Verdadeiro!");
+				return VERDADEIRO;
+			}else{
+				return FALSO;
+			}
+		}
+		
     }
 
     return FALSO;

@@ -1180,6 +1180,7 @@ void prog()
 }// void prog
 
 void progteste(){
+    int guardarTipo;
 
     //Espera pelo abre chaves
     if(tknext.categoria == SN && tknext.cod == CHAVES_ABRE){
@@ -1195,10 +1196,19 @@ void progteste(){
         while(tknext.categoria == PR && (tknext.cod == CARACTER || tknext.cod == INTEIRO || tknext.cod == REAL ||tknext.cod == BOOLEANO)){
             printf("\nEntrei no while");
             analex();//ta no tipo
+            guardarTipo = tipo();
             printf("\nTo no tipo");
             //Se o próximo token for ID
             if(tknext.categoria == ID){
                 analex();//tá no id
+
+                //Insere ID na tabela
+                if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                    controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, VAR, NAO_ZUMBI);
+                }else{
+                    erroSintatico("ID já existente");
+                }
+
                 printf("\nTo no id");
 
                 //Enquanto TNEXT for vírgula
@@ -1209,6 +1219,14 @@ void progteste(){
                         erroSintatico("Eh esperado ID após virgula");
                     }
                     analex();//pra pegar o ID
+
+                    //Insere ID na tabela
+                    if(!controlador_TabSimb(CONSULTAR, tk.lexema, 0, LOCAL, 0, 0)){
+                        controlador_TabSimb(EMPILHAR, tk.lexema, guardarTipo, LOCAL, VAR, NAO_ZUMBI);
+                    }else{
+                        erroSintatico("ID já existente");
+                    }
+
                     if(!(tknext.categoria == SN && tknext.cod == VIRG) && !(tknext.categoria == SN && tknext.cod == PT_VIRG)){
                         erroSintatico("Eh esperado virgula ou PT_VIRG apos id");
                     }
@@ -1236,6 +1254,11 @@ void progteste(){
             cmd();
         }
 
+        //Apos encontrar o fecha chaves, desempilha
+        imprimirTabela();
+        desempilhar();
+        imprimirTabela();
+
     }
 
 }
@@ -1257,7 +1280,7 @@ int main(){
         imprimirTK(tk);
         imprimirTK(tknext);
 
-        tipos_p_opc();
+        progteste();
 
         fclose(arquivo);
     }
